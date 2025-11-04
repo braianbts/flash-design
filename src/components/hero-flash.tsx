@@ -64,7 +64,7 @@ export default function HeroFlash() {
       >
         {/* Imagen de fondo */}
         <Image
-          src="/IMG1.jpg"
+          src="/IMG1.JPG"
           alt="Flash Design Hero"
           fill
           priority
