@@ -1,18 +1,13 @@
+// app/api/tn/products/route.ts
 import { NextResponse } from "next/server";
-
 export const runtime = "nodejs";
 
 export async function GET(req: Request) {
-  const { searchParams } = new URL(req.url);
-  const limit = Math.min(Number(searchParams.get("limit") ?? 8), 30);
-  const tag = searchParams.get("tag") ?? ""; // si querés filtrar por tag
+  const url = new URL(req.url);
+  const limit = Math.min(parseInt(url.searchParams.get("limit") || "8", 10), 50);
 
-  const qs = new URLSearchParams();
-  qs.set("per_page", String(limit));
-  if (tag) qs.set("tag", tag);
-
-  const storeId = process.env.TN_STORE_ID!;
-  const token = process.env.TN_ACCESS_TOKEN!;
+  const storeId = process.env.TN_STORE_ID;
+  const token = process.env.TN_ACCESS_TOKEN;
 
   if (!storeId || !token) {
     return NextResponse.json(
@@ -21,39 +16,32 @@ export async function GET(req: Request) {
     );
   }
 
-  // Endpoint oficial Tiendanube
-  const url = `https://api.tiendanube.com/v1/${storeId}/products?${qs.toString()}`;
+  const apiUrl = `https://api.tiendanube.com/v1/${storeId}/products?per_page=${limit}`;
 
-  const r = await fetch(url, {
-    method: "GET",
+  const r = await fetch(apiUrl, {
     headers: {
-      // Tiendanube usa este header (no "Authorization"). Mantener 'bearer' en minúscula:
-      Authentication: `bearer ${token}`,
-      Accept: "application/json",
-      // Requerido por política: identificá tu app + contacto
-      "User-Agent": "FlashDesign (contacto: tu-mail@tu-dominio.com)",
+      // 👇 OBLIGATORIO
+      "Authorization": `Bearer ${token}`,
+      "User-Agent": "FlashDesign (contacto@tudominio.com)",
+      "Accept": "application/json",
     },
-    cache: "no-store",
+    // method: "GET" // opcional
   });
 
   const txt = await r.text();
   if (!r.ok) {
-    return new NextResponse(
-      `Tiendanube respondió ${r.status}\n\n${txt}`,
-      { status: r.status, headers: { "Content-Type": "text/plain; charset=utf-8" } }
-    );
+    // Devolvé el error crudo para depurar
+    return new NextResponse(`tiendanube respondió ${r.status}\n\n${txt}`, {
+      status: r.status,
+      headers: { "Content-Type": "text/plain; charset=utf-8" },
+    });
   }
 
-  const products = JSON.parse(txt);
-
-  // Normalizo para tu carrusel
-  const mapped = products.map((p: any) => ({
-    id: p.id,
-    name: p.name?.es ?? p.name?.pt ?? p.name?.en ?? "",
-    price: p.variants?.[0]?.price ? Number(p.variants[0].price) : 0,
-    image: p.images?.[0]?.src ?? "/product.png",
-    slug: p.handle ?? p.permalink ?? null,
-  }));
-
-  return NextResponse.json(mapped, { headers: { "Cache-Control": "no-store" } });
+  try {
+    return NextResponse.json(JSON.parse(txt), {
+      headers: { "Cache-Control": "no-store" },
+    });
+  } catch {
+    return NextResponse.json({ error: "bad_json", raw: txt }, { status: 502 });
+  }
 }
