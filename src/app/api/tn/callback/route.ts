@@ -17,6 +17,18 @@ export async function GET(req: Request) {
       redirect_uri: redirectUri, // Recomendado: incluirlo
     });
 
+    const appId = process.env.TN_APP_ID;
+    const secret = process.env.TN_CLIENT_SECRET;
+
+    if (!appId || !secret) {
+    return new NextResponse(
+        `ENV faltantes en runtime:
+    TN_APP_ID=${appId ?? "null"}
+    TN_CLIENT_SECRET_LEN=${secret ? String(secret.length) : "null"}`,
+        { status: 500, headers: { "Content-Type": "text/plain; charset=utf-8" } }
+    );
+}
+
     const r = await fetch("https://www.tiendanube.com/apps/authorize/token", {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
