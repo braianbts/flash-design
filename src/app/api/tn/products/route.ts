@@ -9,20 +9,16 @@ export async function GET(req: Request) {
     const url = new URL(req.url);
     const limit = Math.min(Number(url.searchParams.get("limit") ?? "10"), 50);
 
-    // 👇 CORREGIDO: cookies() es async → hacé await
+    // cookies (si el callback las seteó) + fallback a ENV
     const c = await cookies();
     const cookieStoreId = c.get("tn_store_id")?.value;
     const cookieToken = c.get("tn_access_token")?.value;
 
-    // fallback a ENV
     const envStoreId = process.env.TN_STORE_ID;
     const envToken = process.env.TN_ACCESS_TOKEN;
 
     const storeId = cookieStoreId ?? envStoreId;
     const accessToken = cookieToken ?? envToken;
-
-    const userAgent = process.env.TN_USER_AGENT ?? "FlashDesign (dev@flashdesign.app)";
-    const apiVersion = process.env.TN_API_VERSION ?? "2025-03";
 
     if (!storeId || !accessToken) {
       return NextResponse.json(
@@ -44,9 +40,9 @@ export async function GET(req: Request) {
 
     const headers: Record<string, string> = {
       Accept: "application/json",
-      "User-Agent": userAgent,
-      Authentication: `bearer ${accessToken}`,
-      "X-Nuvem-Api-Version": apiVersion,
+      "User-Agent": process.env.TN_USER_AGENT ?? "FlashDesign (braianbts@gmail.com)",
+      Authorization: `Bearer ${accessToken}`,
+      "X-Nuvem-Api-Version": process.env.TN_API_VERSION ?? "2025-03",
     };
 
     const r = await fetch(apiUrl, { headers, cache: "no-store" });
