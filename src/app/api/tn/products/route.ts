@@ -9,6 +9,10 @@ export async function GET(req: Request) {
   const storeId = process.env.TN_STORE_ID;
   const token = process.env.TN_ACCESS_TOKEN;
 
+  console.log("storeIdstoreIdstoreId", storeId);
+  console.log("tokentokentokentokentoken", token);
+  
+
   if (!storeId || !token) {
     return NextResponse.json(
       { error: "missing_env", message: "TN_STORE_ID / TN_ACCESS_TOKEN faltan" },
