@@ -5,27 +5,37 @@ export const runtime = "nodejs";
 
 export async function GET(req: Request) {
   const url = new URL(req.url);
-  const store = url.searchParams.get("store"); // ej: flashxdesign
-  if (!store) {
+  const store = url.searchParams.get("store"); // opcional, para trackear de dónde vino
+
+  const appId = process.env.TN_APP_ID;
+  if (!appId) {
     return NextResponse.json(
-      { error: "missing_store", message: "Usá ?store=flashxdesign (subdominio de tu tienda)" },
-      { status: 400 }
+      { error: "missing_env", message: "TN_APP_ID no está configurado" },
+      { status: 500 }
     );
   }
 
-  const clientId = process.env.TN_APP_ID!;
-  const redirectUri = encodeURIComponent("https://flashdesign.vercel.app/api/tn/callback");
-  const scope = encodeURIComponent("read_products,write_products,read_orders,write_orders");
   const state = randomBytes(16).toString("hex");
+  const redirectUri =
+    process.env.TN_REDIRECT_URI ??
+    "https://flashdesign.vercel.app/api/tn/callback";
+  const scope = "read_products,write_products,read_orders,write_orders";
 
-  const authorizeUrl =
-    `https://${store}.tiendanube.com/admin/apps/authorize` +
-    `?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}` +
-    `&response_type=code&state=${state}`;
+  const authorizeUrl = new URL(
+    `https://www.tiendanube.com/apps/${appId}/authorize`
+  );
+  authorizeUrl.searchParams.set("state", state);
+  authorizeUrl.searchParams.set("redirect_uri", redirectUri);
+  authorizeUrl.searchParams.set("scope", scope);
+  // si querés guardar el store del frontend, lo codificás en el state, etc.
 
-  const res = NextResponse.redirect(authorizeUrl, { status: 302 });
+  const res = NextResponse.redirect(authorizeUrl.toString(), { status: 302 });
   res.cookies.set("tn_oauth_state", state, {
-    httpOnly: true, sameSite: "lax", secure: true, path: "/", maxAge: 600,
+    httpOnly: true,
+    sameSite: "lax",
+    secure: true,
+    path: "/",
+    maxAge: 600,
   });
   return res;
 }

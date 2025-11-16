@@ -1,18 +1,16 @@
 // src/app/api/tn/products/route.ts
-import { NextResponse } from "next/server";
-import { cookies } from "next/headers";
+import { NextResponse, type NextRequest } from "next/server";
 
 export const runtime = "nodejs";
 
-export async function GET(req: Request) {
+export async function GET(req: NextRequest) {
   try {
     const url = new URL(req.url);
     const limit = Math.min(Number(url.searchParams.get("limit") ?? "10"), 50);
 
-    // cookies (si el callback las seteó) + fallback a ENV
-    const c = await cookies();
-    const cookieStoreId = c.get("tn_store_id")?.value;
-    const cookieToken = c.get("tn_access_token")?.value;
+    // Leemos cookies desde el request
+    const cookieStoreId = req.cookies.get("tn_store_id")?.value;
+    const cookieToken = req.cookies.get("tn_access_token")?.value;
 
     const envStoreId = process.env.TN_STORE_ID;
     const envToken = process.env.TN_ACCESS_TOKEN;
@@ -40,9 +38,13 @@ export async function GET(req: Request) {
 
     const headers: Record<string, string> = {
       Accept: "application/json",
-      "User-Agent": process.env.TN_USER_AGENT ?? "FlashDesign (braianbts@gmail.com)",
-      Authorization: `Bearer ${accessToken}`,
-      "X-Nuvem-Api-Version": process.env.TN_API_VERSION ?? "2025-03",
+      "User-Agent":
+        process.env.TN_USER_AGENT ?? "FlashDesign (braianbts@gmail.com)",
+      // Recomendado según docs:
+      Authentication: `bearer ${accessToken}`,
+      // Si te da drama, podés probar con Authorization:
+      // Authorization: `Bearer ${accessToken}`,
+      // "X-Nuvem-Api-Version": process.env.TN_API_VERSION ?? "2025-03",
     };
 
     const r = await fetch(apiUrl, { headers, cache: "no-store" });
