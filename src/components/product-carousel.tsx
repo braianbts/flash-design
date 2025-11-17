@@ -2,25 +2,59 @@
 import Image from "next/image";
 import useSWR from "swr";
 
-const fetcher = (url: string) => fetch(url).then((r) => {
-  if (!r.ok) throw new Error("Network error");
-  return r.json();
-});
+const fetcher = (url: string) =>
+  fetch(url).then((r) => {
+    if (!r.ok) throw new Error("Network error");
+    return r.json();
+  });
 
-// Pequeño formateador ARS
+// Formateador ARS
 const peso = new Intl.NumberFormat("es-AR", {
   style: "currency",
   currency: "ARS",
   maximumFractionDigits: 0,
 });
 
+// ---- Tipos ----
+type TnLangField = string | { es?: string; en?: string; pt?: string };
+
+type TnImage = {
+  src: string;
+};
+
+type TnVariant = {
+  price: string;
+  compare_at_price?: string | null;
+};
+
+type TnHandle = TnLangField;
+
+type TnProduct = {
+  id: number;
+  name: TnLangField;
+  handle?: TnHandle;
+  images?: TnImage[];
+  variants?: TnVariant[];
+};
+
+type ApiResponse = {
+  items: TnProduct[];
+};
+
 type Product = {
   id: string | number;
   name: string;
-  price: number;            // en ARS
-  image: string;            // url
+  price: number; // en ARS
+  image: string; // url
   slug?: string;
 };
+
+// helper para leer name/handle multilanguage
+function getLang(field: TnLangField | undefined, fallback: string = ""): string {
+  if (!field) return fallback;
+  if (typeof field === "string") return field;
+  return field.es || field.en || field.pt || fallback;
+}
 
 export default function ProductCarousel({
   tag = "landing-featured",
@@ -29,11 +63,30 @@ export default function ProductCarousel({
   tag?: string;
   limit?: number;
 }) {
-  const { data, error, isLoading } = useSWR<Product[]>(
+  // OJO: la API devuelve { items: [...] }
+  const { data, error, isLoading } = useSWR<ApiResponse>(
     `/api/tn/products?tag=${encodeURIComponent(tag)}&limit=${limit}`,
     fetcher,
     { keepPreviousData: true }
   );
+
+  // Normalizamos Tiendanube → Product[]
+  const normalized: Product[] =
+    data?.items?.slice(0, limit).map((p) => {
+      const name = getLang(p.name, "Producto sin nombre");
+      const image = p.images?.[0]?.src || "/product.png";
+      const priceStr = p.variants?.[0]?.price ?? "0";
+      const price = Number(priceStr) || 0;
+      const slug = getLang(p.handle);
+
+      return {
+        id: p.id,
+        name,
+        price,
+        image,
+        slug,
+      };
+    }) ?? [];
 
   // fallback mock si no hay data
   const mock: Product[] = Array.from({ length: limit }).map((_, i) => ({
@@ -43,14 +96,21 @@ export default function ProductCarousel({
     image: "/product.png",
   }));
 
-  const items: Product[] = data?.slice(0, limit) ?? mock;
+  const items: Product[] = normalized.length ? normalized : mock;
 
   // Skeleton mientras carga inicial
   if (isLoading && !data) {
     return (
-      <div role="status" aria-live="polite" className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+      <div
+        role="status"
+        aria-live="polite"
+        className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6"
+      >
         {Array.from({ length: Math.min(limit, 8) }).map((_, i) => (
-          <div key={i} className="rounded-md overflow-hidden bg-white shadow-md">
+          <div
+            key={i}
+            className="rounded-md overflow-hidden bg-white shadow-md"
+          >
             <div className="aspect-square bg-neutral-200 animate-pulse" />
             <div className="p-3 md:p-4 space-y-2">
               <div className="h-4 w-2/3 bg-neutral-200 animate-pulse rounded" />
@@ -63,11 +123,18 @@ export default function ProductCarousel({
   }
 
   if (error) {
-    return <p className="text-sm text-red-600">Error cargando productos.</p>;
+    return (
+      <p className="text-sm text-red-600">
+        Error cargando productos: {error.message}
+      </p>
+    );
   }
 
   return (
-    <div role="list" className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+    <div
+      role="list"
+      className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6"
+    >
       {items.map((p, idx) => (
         <article
           role="listitem"
@@ -82,11 +149,11 @@ export default function ProductCarousel({
           <div className="relative w-full aspect-square overflow-hidden">
             <Image
               src={p.image || "/product.png"}
-              alt={"asd"}
+              alt={p.name}
               fill
               sizes="(max-width: 768px) 50vw, 25vw"
               className="object-cover transition-transform duration-500 group-hover:scale-105"
-              priority={idx < 2}  // primeras 2 en prioridad
+              priority={idx < 2} // primeras 2 en prioridad
             />
           </div>
 

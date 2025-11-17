@@ -87,8 +87,6 @@ export default function HeroFlash() {
               Redefinimos
               <br /> el arte del
               <br /> calzado custom.
-              <br />V1.1
-              <br />V1.1
             </h1>
 
               <p className="mt-6 max-w-[60ch] text-neutral-200 text-base md:text-lg leading-relaxed">
