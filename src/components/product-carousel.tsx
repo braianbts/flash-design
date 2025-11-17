@@ -170,12 +170,6 @@ export default function ProductCarousel({
             <p className="text-neutral-500 text-sm md:text-[15px] mt-1">
               {Number.isFinite(p.price) ? peso.format(p.price) : "—"}
             </p>
-            {/* Accesibilidad teclado */}
-            <a
-              href={p.slug ? `/producto/${p.slug}` : "#"}
-              className="absolute inset-0"
-              aria-label={`Ver detalle de ${p.name}`}
-            />
           </div>
         </article>
       ))}

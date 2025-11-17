@@ -16,13 +16,16 @@ export default function ProductCard({ product }: Props) {
   const format = (n: number) =>
     n.toLocaleString("es-AR", { style: "currency", currency: "ARS" });
 
-  const url = product.handle
-    ? `https://flashxdesign.mitiendanube.com/productos/${product.handle}`
-    : "#";
+  // 🔥 URL correcta Tiendanube
+  const url =
+    product.handle
+      ? `https://flashxdesign.mitiendanube.com/productos/${product.handle}`
+      : "#";
 
   return (
     <a href={url} target="_blank" rel="noreferrer" className="block">
       <div className="group rounded-2xl border p-3 hover:shadow-lg transition cursor-pointer">
+        
         <div className="relative aspect-square overflow-hidden rounded-xl bg-neutral-100">
           <Image
             src={product.image_url}
@@ -39,14 +42,10 @@ export default function ProductCard({ product }: Props) {
         </div>
 
         <div className="mt-3 space-y-1">
-          <h3 className="text-sm font-medium line-clamp-2">
-            {product.title}
-          </h3>
+          <h3 className="text-sm font-medium line-clamp-2">{product.title}</h3>
 
           <div className="flex items-center gap-2">
-            <span className="text-base font-semibold">
-              {format(product.price)}
-            </span>
+            <span className="text-base font-semibold">{format(product.price)}</span>
             {product.compare_at_price && (
               <span className="text-sm text-neutral-500 line-through">
                 {format(product.compare_at_price)}
