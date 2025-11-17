@@ -8,18 +8,14 @@ type Props = {
     compare_at_price?: number;
     image_url: string;
     in_stock: boolean;
-    handle?: string; // 👈 agregado
+    handle?: string;
   };
 };
 
 export default function ProductCard({ product }: Props) {
   const format = (n: number) =>
-    n.toLocaleString("es-AR", {
-      style: "currency",
-      currency: "ARS",
-    });
+    n.toLocaleString("es-AR", { style: "currency", currency: "ARS" });
 
-  // 👇 Generamos URL pública del producto (Tiendanube)
   const url = product.handle
     ? `https://flashxdesign.mitiendanube.com/productos/${product.handle}`
     : "#";
@@ -43,10 +39,14 @@ export default function ProductCard({ product }: Props) {
         </div>
 
         <div className="mt-3 space-y-1">
-          <h3 className="text-sm font-medium line-clamp-2">{product.title}</h3>
+          <h3 className="text-sm font-medium line-clamp-2">
+            {product.title}
+          </h3>
 
           <div className="flex items-center gap-2">
-            <span className="text-base font-semibold">{format(product.price)}</span>
+            <span className="text-base font-semibold">
+              {format(product.price)}
+            </span>
             {product.compare_at_price && (
               <span className="text-sm text-neutral-500 line-through">
                 {format(product.compare_at_price)}
