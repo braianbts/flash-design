@@ -1,6 +1,7 @@
 "use client";
 import Image from "next/image";
 import useSWR from "swr";
+import ProductCard from "@/components/product-card"; // 👈 IMPORTANTE
 
 const fetcher = (url: string) =>
   fetch(url).then(async (r) => {
@@ -12,7 +13,6 @@ const fetcher = (url: string) =>
     return json;
   });
 
-
 // Formateador ARS
 const peso = new Intl.NumberFormat("es-AR", {
   style: "currency",
@@ -20,41 +20,25 @@ const peso = new Intl.NumberFormat("es-AR", {
   maximumFractionDigits: 0,
 });
 
-// ---- Tipos ----
 type TnLangField = string | { es?: string; en?: string; pt?: string };
-
-type TnImage = {
-  src: string;
-};
-
-type TnVariant = {
-  price: string;
-  compare_at_price?: string | null;
-};
-
-type TnHandle = TnLangField;
-
+type TnImage = { src: string };
+type TnVariant = { price: string; compare_at_price?: string | null };
 type TnProduct = {
   id: number;
   name: TnLangField;
-  handle?: TnHandle;
+  handle?: TnLangField;
   images?: TnImage[];
   variants?: TnVariant[];
 };
-
-type ApiResponse = {
-  items: TnProduct[];
-};
-
+type ApiResponse = { items: TnProduct[] };
 type Product = {
   id: string | number;
   name: string;
-  price: number; // en ARS
-  image: string; // url
+  price: number;
+  image: string;
   slug?: string;
 };
 
-// helper para leer name/handle multilanguage
 function getLang(field: TnLangField | undefined, fallback: string = ""): string {
   if (!field) return fallback;
   if (typeof field === "string") return field;
@@ -68,20 +52,17 @@ export default function ProductCarousel({
   tag?: string;
   limit?: number;
 }) {
-  // OJO: la API devuelve { items: [...] }
   const { data, error, isLoading } = useSWR<ApiResponse>(
     `/api/tn/products?tag=${encodeURIComponent(tag)}&limit=${limit}`,
     fetcher,
     { keepPreviousData: true }
   );
 
-  // Normalizamos Tiendanube → Product[]
   const normalized: Product[] =
     data?.items?.slice(0, limit).map((p) => {
-      const name = getLang(p.name, "Producto sin nombre");
+      const name = getLang(p.name);
       const image = p.images?.[0]?.src || "/product.png";
-      const priceStr = p.variants?.[0]?.price ?? "0";
-      const price = Number(priceStr) || 0;
+      const price = Number(p.variants?.[0]?.price ?? 0);
       const slug = getLang(p.handle);
 
       return {
@@ -93,7 +74,6 @@ export default function ProductCarousel({
       };
     }) ?? [];
 
-  // fallback mock si no hay data
   const mock: Product[] = Array.from({ length: limit }).map((_, i) => ({
     id: `mock-${i}`,
     name: `Producto #${i + 1}`,
@@ -101,21 +81,13 @@ export default function ProductCarousel({
     image: "/product.png",
   }));
 
-  const items: Product[] = normalized.length ? normalized : mock;
+  const items = normalized.length ? normalized : mock;
 
-  // Skeleton mientras carga inicial
   if (isLoading && !data) {
     return (
-      <div
-        role="status"
-        aria-live="polite"
-        className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6"
-      >
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
         {Array.from({ length: Math.min(limit, 8) }).map((_, i) => (
-          <div
-            key={i}
-            className="rounded-md overflow-hidden bg-white shadow-md"
-          >
+          <div key={i} className="rounded-md overflow-hidden bg-white shadow-md">
             <div className="aspect-square bg-neutral-200 animate-pulse" />
             <div className="p-3 md:p-4 space-y-2">
               <div className="h-4 w-2/3 bg-neutral-200 animate-pulse rounded" />
@@ -128,50 +100,23 @@ export default function ProductCarousel({
   }
 
   if (error) {
-    return (
-      <p className="text-sm text-red-600">
-        Error cargando productos: {error.message}
-      </p>
-    );
+    return <p className="text-sm text-red-600">Error cargando productos: {error.message}</p>;
   }
 
   return (
-    <div
-      role="list"
-      className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6"
-    >
+    <div role="list" className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
       {items.map((p, idx) => (
-        <article
-          role="listitem"
+        <ProductCard
           key={p.id ?? idx}
-          className="
-            group relative overflow-hidden rounded-md bg-white shadow-md
-            transition-transform duration-300 hover:-translate-y-1 hover:shadow-xl
-            focus-within:-translate-y-1 focus-within:shadow-xl
-          "
-        >
-          {/* Imagen */}
-          <div className="relative w-full aspect-square overflow-hidden">
-            <Image
-              src={p.image || "/product.png"}
-              alt={p.name}
-              fill
-              sizes="(max-width: 768px) 50vw, 25vw"
-              className="object-cover transition-transform duration-500 group-hover:scale-105"
-              priority={idx < 2} // primeras 2 en prioridad
-            />
-          </div>
-
-          {/* Contenido */}
-          <div className="p-3 md:p-4 text-center">
-            <h3 className="text-sm md:text-base font-semibold text-neutral-800 line-clamp-2">
-              {p.name}
-            </h3>
-            <p className="text-neutral-500 text-sm md:text-[15px] mt-1">
-              {Number.isFinite(p.price) ? peso.format(p.price) : "—"}
-            </p>
-          </div>
-        </article>
+          product={{
+            id: String(p.id),
+            title: p.name,
+            price: p.price,
+            image_url: p.image,
+            in_stock: true,
+            handle: p.slug, // 👈 AHORA EL LINK FUNCIONA
+          }}
+        />
       ))}
     </div>
   );
