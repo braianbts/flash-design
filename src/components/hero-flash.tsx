@@ -34,10 +34,7 @@ export default function HeroFlash() {
                      shadow-[0_2px_12px_rgba(0,0,0,0.25)]"
         />
         {/* Izquierda */}
-        <div className="flex items-center gap-6 md:gap-8 text-[13px] md:text-sm tracking-widest uppercase">
-          <Link href="#productos" className="text-neutral-300 hover:text-white transition-colors">Productos</Link>
-          <Link href="#servicios" className="text-neutral-300 hover:text-white transition-colors">Servicios</Link>
-        </div>
+  
 
         {/* Logo centrado */}
         <div className="absolute left-1/2 -translate-x-1/2">
@@ -51,11 +48,6 @@ export default function HeroFlash() {
           />
         </div>
 
-        {/* Derecha */}
-        <div className="flex items-center gap-6 md:gap-8 text-[13px] md:text-sm tracking-widest uppercase">
-          <Link href="#sobre-mi" className="text-neutral-300 hover:text-white transition-colors">Sobre mí</Link>
-          <Link href="#contacto" className="text-neutral-300 hover:text-white transition-colors">Contacto</Link>
-        </div>
       </nav>
 
       {/* HERO */}
