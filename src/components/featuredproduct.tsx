@@ -4,7 +4,7 @@ import { ShoppingCart } from "lucide-react";
 import { useRef, useState, useEffect, useMemo } from "react";
 import useSWR from "swr";
 
-// ---------- fetcher (igual que en el carrusel) ----------
+// ---------- fetcher ----------
 const fetcher = (url: string) =>
   fetch(url).then(async (r) => {
     const json = await r.json().catch(() => ({}));
@@ -17,13 +17,8 @@ const fetcher = (url: string) =>
 
 // ---------- Tipos Tiendanube ----------
 type TnLangField = string | { es?: string; en?: string; pt?: string };
-
 type TnImage = { src: string };
-
-type TnVariant = {
-  price: string;
-  compare_at_price?: string | null;
-};
+type TnVariant = { price: string; compare_at_price?: string | null };
 
 type TnProduct = {
   id: number;
@@ -35,56 +30,61 @@ type TnProduct = {
   variants?: TnVariant[];
 };
 
-type ApiResponse = {
-  items: TnProduct[];
-};
+type ApiResponse = { items: TnProduct[] };
 
-// helper para leer campos multilanguage
+// ---------- helper multilanguage ----------
 function getLang(field: TnLangField | undefined, fallback: string = ""): string {
   if (!field) return fallback;
   if (typeof field === "string") return field;
   return field.es || field.en || field.pt || fallback;
 }
 
-// sacamos tags HTML de la descripción
-function stripHtml(html: string): string {
-  return html.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
+// ---------- LIMPIAR DESCRIPCIÓN ----------
+function cleanDescription(html: string): string {
+  if (!html) return "";
+
+  // 1) Decodificar entidades (&nbsp; etc.)
+  const textarea = document.createElement("textarea");
+  textarea.innerHTML = html;
+  let decoded = textarea.value;
+
+  // 2) Quitar CARACTERISTICAS del inicio (con variantes)
+  decoded = decoded.replace(/caracteristicas[\s:]*?/i, "");
+
+  // 3) Remover etiquetas HTML
+  decoded = decoded.replace(/<[^>]+>/g, " ");
+
+  // 4) Colapsar espacios múltiples
+  decoded = decoded.replace(/\s+/g, " ").trim();
+
+  return decoded;
 }
 
 export default function FeaturedProduct() {
   // -------------------------------
-  // Fetch producto random de Tiendanube
+  // Fetch producto random
   // -------------------------------
-  const { data, error, isLoading } = useSWR<ApiResponse>(
-    "/api/tn/products?limit=50",
-    fetcher
-  );
+  const { data, error } = useSWR<ApiResponse>("/api/tn/products?limit=50", fetcher);
 
   const product = useMemo(() => {
     if (!data?.items?.length) return null;
-
-    // priorizamos productos con imagen y precio
     const withImage = data.items.filter(
-      (p:any) => p.images?.[0]?.src && p.variants?.[0]?.price
+      (p: any) => p.images?.[0]?.src && p.variants?.[0]?.price
     );
     const pool = withImage.length ? withImage : data.items;
-    const idx = Math.floor(Math.random() * pool.length);
-    return pool[idx];
+    return pool[Math.floor(Math.random() * pool.length)];
   }, [data]);
 
   // -------------------------------
   // Tilt 3D
   // -------------------------------
   const cardRef = useRef<HTMLDivElement | null>(null);
-  const [transform, setTransform] = useState<string>(
+  const [transform, setTransform] = useState(
     "perspective(1200px) rotateX(0deg) rotateY(0deg) translateZ(0)"
   );
-  const [glarePos, setGlarePos] = useState<{ x: number; y: number }>({
-    x: 50,
-    y: 50,
-  });
+  const [glarePos, setGlarePos] = useState({ x: 50, y: 50 });
   const [enableTilt, setEnableTilt] = useState(false);
-  const maxTilt = 8; // grados máx de rotación
+  const maxTilt = 8;
 
   useEffect(() => {
     const okPointer =
@@ -100,8 +100,8 @@ export default function FeaturedProduct() {
   const onMove: React.MouseEventHandler<HTMLDivElement> = (e) => {
     if (!enableTilt || !cardRef.current) return;
     cancelAnimationFrame(raf);
-    const el = cardRef.current;
-    const rect = el.getBoundingClientRect();
+
+    const rect = cardRef.current.getBoundingClientRect();
     const px = e.clientX - rect.left;
     const py = e.clientY - rect.top;
 
@@ -128,18 +128,15 @@ export default function FeaturedProduct() {
   };
 
   // -------------------------------
-  // Derivamos datos del producto o usamos fallback
+  // Datos normalizados
   // -------------------------------
-  const name =
-    product && getLang(product.name, "Producto destacado Flash Design");
+  const name = product ? getLang(product.name) : "Producto destacado";
   const price = product ? Number(product.variants?.[0]?.price ?? 0) : 0;
   const image = product?.images?.[0]?.src || "/product.png";
   const canonicalUrl = product?.canonical_url;
 
   const rawDesc = product ? getLang(product.description) : "";
-  const cleanedDesc = rawDesc ? stripHtml(rawDesc) : "";
-  const description =
-    cleanedDesc || "Custom pieces, luxury materials and unique craftsmanship.";
+  const description = rawDesc ? cleanDescription(rawDesc) : "—";
 
   const formattedPrice =
     price > 0
@@ -150,11 +147,6 @@ export default function FeaturedProduct() {
         })
       : "";
 
-  // loading/error simple
-  if (error) {
-    console.error("Error featured product:", error);
-  }
-
   return (
     <section className="relative mx-auto py-20 overflow-hidden bg-white">
       {/* Fondo animado */}
@@ -163,64 +155,6 @@ export default function FeaturedProduct() {
         <div className="gradient-bubble bubble-2" />
         <div className="gradient-bubble bubble-3" />
         <div className="edge-glow pointer-events-none absolute inset-0 z-0" />
-
-        <style jsx>{`
-          .edge-glow {
-            --blue: 0, 122, 255;
-            --cyan: 0, 200, 255;
-            --orange: 255, 140, 0;
-            --magenta: 255, 0, 128;
-            position: absolute;
-            inset: 0;
-            background:
-              radial-gradient(
-                130vmax 80vmax at 10% 115%,
-                rgba(var(--blue), 0.55) 0%,
-                rgba(var(--cyan), 0.3) 25%,
-                rgba(var(--cyan), 0.12) 45%,
-                rgba(0, 0, 0, 0) 60%
-              ),
-              radial-gradient(
-                130vmax 80vmax at 90% 115%,
-                rgba(var(--orange), 0.45) 0%,
-                rgba(var(--magenta), 0.28) 25%,
-                rgba(var(--magenta), 0.12) 45%,
-                rgba(0, 0, 0, 0) 60%
-              );
-            filter: blur(22px);
-            transform: translateZ(0);
-            animation: drift 20s ease-in-out infinite alternate;
-          }
-          .edge-glow::after {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(
-              to top,
-              rgba(255, 255, 255, 0) 0%,
-              rgba(255, 255, 255, 0) 55%,
-              rgba(255, 255, 255, 0.35) 85%,
-              rgba(255, 255, 255, 0.65) 100%
-            );
-          }
-          @keyframes drift {
-            0% {
-              transform: translateY(0);
-            }
-            100% {
-              transform: translateY(1.6vmax);
-            }
-          }
-          @media (prefers-reduced-motion: reduce) {
-            .edge-glow {
-              animation: none;
-            }
-          }
-          .gradient-bubble {
-            position: absolute;
-            pointer-events: none;
-          }
-        `}</style>
       </div>
 
       {/* Card */}
@@ -237,8 +171,7 @@ export default function FeaturedProduct() {
             bg-white/80 backdrop-blur-sm
             shadow-[0_10px_30px_rgba(0,0,0,0.15)]
             p-8 md:p-10 flex flex-col md:flex-row items-center gap-8
-            transform-gpu will-change-transform
-            transition-transform duration-150 ease-out
+            transform-gpu transition-transform ease-out
           "
         >
           {/* Glare */}
@@ -254,7 +187,7 @@ export default function FeaturedProduct() {
             <div className="rounded-2xl p-4 bg-white shadow-[0_4px_12px_rgba(0,0,0,0.08)]">
               <Image
                 src={image}
-                alt={name || ""}
+                alt={name}
                 width={400}
                 height={400}
                 className="object-contain"
