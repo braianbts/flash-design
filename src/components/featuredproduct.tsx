@@ -251,7 +251,7 @@ export default function FeaturedProduct() {
 
           {/* Imagen */}
           <div className="flex-1 flex justify-center">
-            <div className="border border-[#2563eb] rounded-2xl p-4 bg-white shadow-[0_4px_12px_rgba(0,0,0,0.08)]">
+            <div className="rounded-2xl p-4 bg-white shadow-[0_4px_12px_rgba(0,0,0,0.08)]">
               <Image
                 src={image}
                 alt={name || ""}
