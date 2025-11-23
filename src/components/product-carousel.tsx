@@ -7,11 +7,16 @@ const fetcher = (url: string) =>
   fetch(url).then(async (r) => {
     const json = await r.json().catch(() => ({}));
     if (!r.ok) {
-      const msg = json?.error || json?.message || `Network error (${r.status})`;
+      const msg =
+        json?.detail ||        // 👈 lo que manda Tiendanube
+        json?.error ||
+        json?.message ||
+        `Network error (${r.status})`;
       throw new Error(msg);
     }
     return json;
   });
+
 
 // Formateador ARS
 const peso = new Intl.NumberFormat("es-AR", {
