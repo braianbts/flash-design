@@ -71,20 +71,20 @@ export default function HeroFlash() {
               <h1
               className="
                 font-extrabold
-                tracking-[-0.02em] md:tracking-[-0.028em]
+                tracking-[-0.02em] md:tracking-[-0.030em]
                 leading-[0.9] md:leading-[0.86]
                 text-[clamp(2.6rem,6.5vw,3.7rem)]
               "
             >
-              Redefinimos
-              <br /> el arte del
-              <br /> calzado custom.
+              Personalizacion,
+              <br /> upcycling,
+              <br /> trabajos hechos a medida.
             </h1>
 
               <p className="mt-6 max-w-[60ch] text-neutral-200 text-base md:text-lg leading-relaxed">
                 Diseño, materiales y procesos premium.
                 <br />
-Zapatillas personalizadas para quienes buscan destacar en cada paso.
+Calzado personalizado para quienes buscan destacar en cada paso.
               </p>
 
             </div>
