@@ -83,6 +83,7 @@ export default function HeroFlash() {
 
               <p className="mt-6 max-w-[60ch] text-neutral-200 text-base md:text-lg leading-relaxed">
                 Diseño, materiales y procesos premium.
+                <br />
 Zapatillas personalizadas para quienes buscan destacar en cada paso.
               </p>
 
