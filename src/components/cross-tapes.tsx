@@ -30,7 +30,7 @@ export default function CrossTapes({
 
         {/* Logo entre cada texto */}
         <img
-          src="/small-logo.png"   // asegúrate que esté en /public/small-logo.png
+          src="/small-logo.png"  // asegúrate que esté en /public/small-logo.png
           alt=""
           aria-hidden="true"
           draggable={false}

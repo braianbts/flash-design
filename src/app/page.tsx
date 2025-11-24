@@ -6,50 +6,58 @@ import FeaturedProduct from "@/components/featuredproduct";
 import HighlightsSection from "@/components/highlights-section";
 import AboutSection from "@/components/about-section";
 import Footer from "@/components/footer";
+import OpeningFlashSection from "@/components/OpeningFlashSection";
 
 export default function HomePage() {
   return (
     <main className="mx-auto">
       <HeroFlash />
+
       <CrossTapes
         text="FLASH DESIGN"
         color="#2563EB"
         angle={3}
         height={85}
-        offset={-80} // subí/bajá el conjunto respecto del bottom del hero
-        gap={5} // distancia entre cintas (dónde se cruzan)
+        offset={-80}
+        gap={5}
       />
 
-      <section id="destacados" className="space-y-4">
+      {/* 👇 saco el space-y-4 para que no genere huecos raros */}
+      <section id="destacados">
         <NewArrivalsSection />
         <CategoriesSection />
         <FeaturedProduct />
-                {/* divisor de página */}
+
+        {/* divisor */}
         <div className="relative mt-40">
           <CrossTapes
             text="FLASH DESIGN"
             color="#2563EB"
             angle={3}
             height={85}
-            offset={80} // ✅ positivo
+            offset={80}
             gap={8}
           />
         </div>
+
         <HighlightsSection />
 
-        {/* divisor de página */}
+        {/* divisor */}
         <div className="relative mt-40">
           <CrossTapes
             text="FLASH DESIGN"
             color="#2563EB"
             angle={3}
             height={85}
-            offset={24} // ✅ positivo
+            offset={-10}
             gap={8}
           />
         </div>
-        <AboutSection/>
-         <Footer />
+
+        {/* 🔥 Opening antes del footer, sin margen extra */}
+        <OpeningFlashSection />
+
+        <Footer />
       </section>
     </main>
   );
