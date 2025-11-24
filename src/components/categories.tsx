@@ -78,7 +78,7 @@ export default function CategoriesSection() {
         <figure className="relative w-full rounded-xl overflow-hidden shadow-sm">
           <div className="aspect-[3/4] w-full">
             <Image
-              src="/zapa1.jpeg"
+              src="/zapa1.jpg"
               alt="Zapatilla custom"
               fill
               className="object-cover"

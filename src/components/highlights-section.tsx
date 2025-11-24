@@ -33,7 +33,7 @@ const ITEMS: Item[] = [
       "Colaboración sobre un par de Forum para Duki, en el marco de la campaña ‘Home of Classics’. Uno de los pares con mayor trascendencia en redes sociales.",
   },
   {
-    src: "/canvas.jpeg",
+    src: "/canvas.jpg",
     title: "UPCYCLING – LUXURY CANVAS",
     desc:
       "Compramos bolsos, valijas y distintos ítems de marcas de lujo. Desarmamos el material y creamos accesorios nuevos reutilizando el canvas original.",
