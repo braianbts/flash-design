@@ -57,6 +57,7 @@ export default function HomePage() {
         {/* 🔥 Opening antes del footer, sin margen extra */}
         <OpeningFlashSection />
 
+
         <Footer />
       </section>
     </main>
