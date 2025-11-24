@@ -8,6 +8,7 @@ type Props = {
   angle?: number;
   height?: number;
   offset?: number;
+  mobileOffset?: number; // 👈 nuevo
   gap?: number;
 };
 
@@ -17,6 +18,7 @@ export default function CrossTapes({
   angle = 13,
   height = 92,
   offset = 32,
+  mobileOffset,
   gap = 56,
 }: Props) {
   const [isMobile, setIsMobile] = useState(false);
@@ -25,11 +27,12 @@ export default function CrossTapes({
     setIsMobile(window.innerWidth < 768);
   }, []);
 
-  // Ajustes responsive
-  const tapeWidth = isMobile ? "120vw" : "150vw";
-  const tapeOffset = isMobile ? offset + 40 : offset;
-  const tapeGap = isMobile ? gap + 20 : gap;
+  // ⭐ offsets responsivos
+  const realOffset = isMobile ? (mobileOffset ?? offset) : offset;
+  const realGap = isMobile ? gap + 20 : gap;
+  const realWidth = isMobile ? "120vw" : "150vw";
 
+  // fila de textos + logos
   const Row = () => (
     <div className="flex items-center gap-10 px-10">
       {Array.from({ length: 16 }).map((_, i) => (
@@ -40,11 +43,9 @@ export default function CrossTapes({
           >
             {text}
           </span>
-
           <img
             src="/small-logo.png"
             alt=""
-            aria-hidden="true"
             draggable={false}
             className="h-7 w-auto opacity-95 select-none"
           />
@@ -61,15 +62,18 @@ export default function CrossTapes({
   return (
     <div
       className="absolute inset-x-0 pointer-events-none select-none z-40"
-      style={{ bottom: 0, height: tapeOffset + tapeGap + height + 40 }}
+      style={{
+        bottom: 0,
+        height: realOffset + realGap + height + 40, // altura dinámica
+      }}
     >
-      {/* Cinta inferior */}
+      {/* CINTA INFERIOR */}
       <div
         className={base}
         style={{
-          width: tapeWidth,
+          width: realWidth,
           height,
-          bottom: tapeOffset,
+          bottom: realOffset,
           background: color,
           transform: `translateX(-10%) rotate(${angle}deg)`,
           filter: "drop-shadow(0 22px 40px rgba(0,0,0,.45))",
@@ -81,13 +85,13 @@ export default function CrossTapes({
         </div>
       </div>
 
-      {/* Cinta superior */}
+      {/* CINTA SUPERIOR */}
       <div
         className={base}
         style={{
-          width: tapeWidth,
+          width: realWidth,
           height,
-          bottom: tapeOffset + tapeGap,
+          bottom: realOffset + realGap,
           background: color,
           transform: `translateX(-10%) rotate(${-angle}deg)`,
           filter:

@@ -14,13 +14,16 @@ export default function HomePage() {
       <HeroFlash />
 
       <CrossTapes
-        text="FLASH DESIGN"
-        color="#2563EB"
-        angle={3}
-        height={85}
-        offset={-80}
-        gap={5}
-      />
+  text="FLASH DESIGN"
+  color="#2563EB"
+  angle={3}
+  height={85}
+  offset={-80}        // desktop
+  mobileOffset={100}   // MOBILE FIX
+  gap={5}
+/>
+
+
 
       {/* 👇 saco el space-y-4 para que no genere huecos raros */}
       <section id="destacados">
