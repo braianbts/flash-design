@@ -1,5 +1,6 @@
 "use client";
 import Image from "next/image";
+import { useEffect, useRef } from "react";
 
 // fallback para .HEIC
 const Img = ({ src, alt }: { src: string; alt: string }) => {
@@ -41,10 +42,27 @@ const ITEMS: Item[] = [
 ];
 
 export default function HighlightsRow() {
+  const refs = useRef<(HTMLDivElement | null)[]>([]);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) entry.target.classList.add("card-visible");
+        });
+      },
+      { threshold: 0.2 }
+    );
+
+    refs.current.forEach((el) => el && observer.observe(el));
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <section className="relative w-full bg-neutral py-16">
+    <section className="relative w-full bg-neutral py-16 overflow-hidden">
       <div className="mx-auto max-w-[1250px] px-5">
-        {/* título centrado */}
+
+        {/* título */}
         <div className="mb-10 flex flex-col items-center text-center">
           <div className="relative h-[100px] w-[380px] md:h-[150px] md:w-[560px]">
             <Image
@@ -53,53 +71,69 @@ export default function HighlightsRow() {
               fill
               className="object-contain"
               priority
-            />
+             />
           </div>
           <p className="mt-2 text-neutral-700 text-[15px] md:text-lg font-medium">
             Los pares más icónicos de nuestra colección
           </p>
         </div>
 
-        {/* fila de cards */}
+        {/* GRID */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 md:gap-6 items-stretch">
           {ITEMS.map((it, i) => (
-            <article
-              key={`${it.title}-${i}`}
-              className="group relative rounded-[10px] overflow-hidden bg-white/90 
-                         ring-1 ring-black/5 shadow-[0_6px_20px_rgba(0,0,0,0.10)] 
-                         hover:shadow-[0_10px_28px_rgba(0,0,0,0.14)] transition-all
-                         w-full flex flex-col"
-            >
-              {/* aro/acento */}
-              <span className="pointer-events-none absolute inset-0 rounded-[10px] ring-1 ring-[#2563EB]/15" />
+            <div
+  key={i}
+  ref={(el) => {
+    refs.current[i] = el;
+  }}
+  className="opacity-0 translate-x-[-40px] transition-all duration-[900ms] delay-[120ms]"
+>
+              <article
+                className={`
+                  group relative rounded-[10px] overflow-hidden bg-white/90 
+                  ring-1 ring-black/5 shadow-[0_6px_20px_rgba(0,0,0,0.10)] 
+                  hover:shadow-[0_10px_28px_rgba(0,0,0,0.14)] 
+                  transition-all w-full flex flex-col
+                `}
+              >
+                <span className="pointer-events-none absolute inset-0 rounded-[10px] ring-1 ring-[#2563EB]/15" />
 
-              {/* imagen */}
-              <div className="relative h-[220px] md:h-[230px] overflow-hidden rounded-t-[10px]">
-                <Img src={it.src} alt={it.title} />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/15 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-              </div>
-
-              {/* contenido */}
-              <div className="p-4 flex-1 flex flex-col justify-between">
-                <div>
-                  <div className="inline-flex items-center gap-2 rounded-full border border-[#2563EB]/30 bg-[#2563EB]/10 px-3 py-1">
-                    <span className="h-2 w-2 rounded-full bg-[#2563EB]" />
-                    <span className="text-[11px] font-semibold tracking-wider text-neutral-900">
-                      {it.title}
-                    </span>
-                  </div>
-                  <p className="mt-3 text-[13.5px] leading-snug text-neutral-700">
-                    {it.desc}
-                  </p>
+                {/* imagen */}
+                <div className="relative h-[220px] md:h-[230px] overflow-hidden rounded-t-[10px]">
+                  <Img src={it.src} alt={it.title} />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/15 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                 </div>
-              </div>
 
-              {/* barra inferior */}
-              <span className="absolute inset-x-6 bottom-3 h-[2px] bg-[#2563EB]/70 rounded-full scale-x-0 origin-left transition-transform duration-300 group-hover:scale-x-100" />
-            </article>
+                {/* contenido */}
+                <div className="p-4 flex-1 flex flex-col justify-between">
+                  <div>
+                    <div className="inline-flex items-center gap-2 rounded-full border border-[#2563EB]/30 bg-[#2563EB]/10 px-3 py-1">
+                      <span className="h-2 w-2 rounded-full bg-[#2563EB]" />
+                      <span className="text-[11px] font-semibold tracking-wider text-neutral-900">
+                        {it.title}
+                      </span>
+                    </div>
+
+                    <p className="mt-3 text-[13.5px] leading-snug text-neutral-700">
+                      {it.desc}
+                    </p>
+                  </div>
+                </div>
+
+                <span className="absolute inset-x-6 bottom-3 h-[2px] bg-[#2563EB]/70 rounded-full scale-x-0 origin-left transition-transform duration-300 group-hover:scale-x-100" />
+              </article>
+            </div>
           ))}
         </div>
       </div>
+
+      {/* estilos dinámicos */}
+      <style jsx>{`
+        .card-visible {
+          opacity: 1 !important;
+          transform: translateX(0) !important;
+        }
+      `}</style>
     </section>
   );
 }
