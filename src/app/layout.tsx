@@ -1,6 +1,7 @@
 import "./globals.css";
 import type { ReactNode } from "react";
 import OpeningSplash from "@/components/opening-splash";
+import Navbar from "@/components/navbar";
 import { Plus_Jakarta_Sans } from "next/font/google";
 
 // Cargamos la fuente global
@@ -22,6 +23,8 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <div className="fixed right-0 top-0 h-full w-[5px] bg-[#2563EB] z-[9999]" />
 
 
+
+        <Navbar />
 
         {/* Contenido principal */}
         {children}

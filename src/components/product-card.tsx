@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 type Props = {
   product: {
@@ -16,14 +17,10 @@ export default function ProductCard({ product }: Props) {
   const format = (n: number) =>
     n.toLocaleString("es-AR", { style: "currency", currency: "ARS" });
 
-  // 🔥 URL correcta Tiendanube
-  const url =
-    product.handle
-      ? `https://flashxdesign.mitiendanube.com/productos/${product.handle}`
-      : "#";
+  const url = product.handle ? `/producto/${product.handle}` : "#";
 
   return (
-    <a href={url} target="_blank" rel="noreferrer" className="block">
+    <Link href={url} className="block">
       <div className="group rounded-2xl border p-3 hover:shadow-lg transition cursor-pointer">
         
         <div className="relative aspect-square overflow-hidden rounded-xl bg-neutral-100">
@@ -58,6 +55,6 @@ export default function ProductCard({ product }: Props) {
           </button>
         </div>
       </div>
-    </a>
+    </Link>
   );
 }
