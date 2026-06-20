@@ -1,4 +1,42 @@
+import type { Metadata } from "next";
 import HeroFlash from "@/components/hero-flash";
+
+export const metadata: Metadata = {
+  alternates: { canonical: "https://flashdesign.com.ar" },
+};
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  name: "Flash Design",
+  description:
+    "Customización de sneakers a mano, blackout de botines, canvas de lujo y trabajos únicos hechos a medida en Argentina.",
+  url: "https://flashdesign.com.ar",
+  logo: "https://flashdesign.com.ar/flashlogo.png",
+  image: "https://flashdesign.com.ar/IMG1.jpg",
+  priceRange: "$$",
+  address: {
+    "@type": "PostalAddress",
+    addressCountry: "AR",
+    addressRegion: "Buenos Aires",
+  },
+  sameAs: [
+    "https://www.instagram.com/flashxdesign",
+    "https://kick.com/flashxdesign",
+  ],
+  hasOfferCatalog: {
+    "@type": "OfferCatalog",
+    name: "Servicios Flash Design",
+    itemListElement: [
+      { "@type": "Offer", itemOffered: { "@type": "Service", name: "Custom Sneaker" } },
+      { "@type": "Offer", itemOffered: { "@type": "Service", name: "Blackout Botines" } },
+      { "@type": "Offer", itemOffered: { "@type": "Service", name: "Custom Canvas de Lujo" } },
+      { "@type": "Offer", itemOffered: { "@type": "Service", name: "Custom Just Married" } },
+      { "@type": "Offer", itemOffered: { "@type": "Service", name: "Cambio de Materiales" } },
+      { "@type": "Offer", itemOffered: { "@type": "Service", name: "Curso Sneaker Custom" } },
+    ],
+  },
+};
 import CrossTapes from "@/components/cross-tapes";
 import NewArrivalsSection from "@/components/new-arrivals";
 import CategoriesSection from "@/components/categories";
@@ -10,6 +48,18 @@ import KickSection from "@/components/kick-section";
 import ScrollReveal from "@/components/scroll-reveal";
 
 export default function HomePage() {
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <HomeContent />
+    </>
+  );
+}
+
+function HomeContent() {
   return (
     <main className="mx-auto">
       <HeroFlash />
