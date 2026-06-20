@@ -43,7 +43,7 @@ export const metadata: Metadata = {
       "Customización de sneakers a mano, blackout de botines, canvas de lujo y más. Trabajos únicos hechos a medida en Argentina.",
     images: [
       {
-        url: "/IMG1.jpg",
+        url: "/openingwebflash.jpg",
         width: 1200,
         height: 630,
         alt: "Flash Design — Custom Sneakers",
@@ -55,7 +55,7 @@ export const metadata: Metadata = {
     title: "Flash Design — Sneakers Custom Argentina",
     description:
       "Customización de sneakers a mano, trabajos únicos hechos a medida en Argentina.",
-    images: ["/IMG1.jpg"],
+    images: ["/openingwebflash.jpg"],
   },
   icons: {
     icon: "/small-logo.png",
