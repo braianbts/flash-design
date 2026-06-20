@@ -18,7 +18,7 @@ export default function Navbar() {
   const [open, setOpen] = useState(false);
 
   // dark = sobre hero imagen, light = páginas internas
-  const dark = isHome;
+  const dark = true; // siempre dark — sitio es oscuro
 
   return (
     <>

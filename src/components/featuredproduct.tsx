@@ -148,86 +148,71 @@ export default function FeaturedProduct() {
       : "";
 
   return (
-    <section className="relative mx-auto py-20 overflow-hidden bg-white">
-      {/* Fondo animado */}
-      <div className="absolute inset-0 z-0 pointer-events-none">
-        <div className="gradient-bubble bubble-1" />
-        <div className="gradient-bubble bubble-2" />
-        <div className="gradient-bubble bubble-3" />
-        <div className="edge-glow pointer-events-none absolute inset-0 z-0" />
+    <section className="relative w-full overflow-hidden bg-[#0a0a0a] py-24 md:py-32">
+
+      {/* blobs atmosféricos */}
+      <div aria-hidden className="pointer-events-none absolute inset-0">
+        <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-[500px] h-[500px] rounded-full blur-[120px] opacity-20"
+          style={{ background: "#2563EB" }} />
+        <div className="absolute top-1/2 right-0 -translate-y-1/2 translate-x-1/3 w-[400px] h-[400px] rounded-full blur-[100px] opacity-10"
+          style={{ background: "#4d87f5" }} />
       </div>
 
-      {/* Card */}
-      <div
-        className="group relative z-10 mx-auto max-w-5xl [perspective:1200px]"
-        onMouseMove={onMove}
-        onMouseLeave={onLeave}
-      >
-        <div
-          ref={cardRef}
-          style={{ transform }}
-          className="
-            relative rounded-2xl border border-black/10
-            bg-white/80 backdrop-blur-sm
-            shadow-[0_10px_30px_rgba(0,0,0,0.15)]
-            p-8 md:p-10 flex flex-col md:flex-row items-center gap-8
-            transform-gpu transition-transform ease-out
-          "
-        >
-          {/* Glare */}
-          <div
-            className="pointer-events-none absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-200"
-            style={{
-              background: `radial-gradient(400px 240px at ${glarePos.x}% ${glarePos.y}%, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0) 60%)`,
-            }}
-          />
+      <div className="relative z-10 mx-auto max-w-6xl px-8 md:px-16">
 
-          {/* Imagen */}
-          <div className="flex-1 flex justify-center">
-            <div className="rounded-2xl p-4 bg-white shadow-[0_4px_12px_rgba(0,0,0,0.08)]">
-              <Image
-                src={image}
-                alt={name}
-                width={400}
-                height={400}
-                className="object-contain"
-                priority
-              />
+        {/* label */}
+        <p className="text-[#2563EB] text-xs font-bold uppercase tracking-[0.3em] mb-6">
+          — Producto destacado
+        </p>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center">
+
+          {/* imagen */}
+          <div className="relative">
+            <div className="relative aspect-square max-w-[420px] mx-auto md:mx-0 rounded-2xl overflow-hidden bg-[#111]">
+              <Image src={image} alt={name} fill className="object-cover" priority />
+              {/* glow detrás */}
+              <div className="absolute inset-0 rounded-2xl"
+                style={{ boxShadow: "inset 0 0 60px rgba(37,99,235,0.15)" }} />
             </div>
           </div>
 
-          {/* Contenido */}
-          <div className="flex-1 space-y-4 text-center md:text-left">
-            <h2 className="text-3xl md:text-4xl font-extrabold uppercase leading-snug">
+          {/* contenido */}
+          <div className="space-y-6">
+            <h2 className="text-4xl md:text-6xl font-extrabold uppercase leading-[0.9] tracking-tight text-white">
               {name}
             </h2>
 
             {formattedPrice && (
-              <p className="text-[#2563EB] text-2xl font-bold tracking-tight">
+              <p className="text-[#2563EB] text-3xl md:text-4xl font-extrabold tracking-tight">
                 {formattedPrice}
               </p>
             )}
 
-            <p className="text-neutral-800 text-sm md:text-base leading-relaxed max-w-md mx-auto md:mx-0">
-              {description}
-            </p>
-
-            {canonicalUrl ? (
-              <a
-                href={canonicalUrl}
-                target="_blank"
-                rel="noreferrer"
-                className="mt-4 flex items-center justify-center gap-2 w-full md:w-[75%] bg-[#2563EB] text-white font-extrabold text-sm md:text-base py-3 shadow-[6px_6px_0_#000] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[4px_4px_0_#000] transition-transform"
-              >
-                <ShoppingCart size={18} />
-                VER EN LA TIENDA
-              </a>
-            ) : (
-              <button className="mt-4 flex items-center justify-center gap-2 w-full md:w-[75%] bg-[#2563EB] text-white font-extrabold text-sm md:text-base py-3 shadow-[6px_6px_0_#000] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[4px_4px_0_#000] transition-transform">
-                <ShoppingCart size={18} />
-                AGREGAR AL CARRITO
-              </button>
+            {description && (
+              <p className="text-white/45 text-sm md:text-base leading-relaxed max-w-md">
+                {description}
+              </p>
             )}
+
+            <div className="pt-2">
+              {canonicalUrl ? (
+                <a
+                  href={canonicalUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-3 bg-[#2563EB] text-white font-extrabold text-sm uppercase tracking-widest px-8 py-4 shadow-[6px_6px_0_rgba(0,0,0,0.5)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[4px_4px_0_rgba(0,0,0,0.5)] transition-transform"
+                >
+                  <ShoppingCart size={18} />
+                  Ver en la tienda
+                </a>
+              ) : (
+                <button className="inline-flex items-center gap-3 bg-[#2563EB] text-white font-extrabold text-sm uppercase tracking-widest px-8 py-4 shadow-[6px_6px_0_rgba(0,0,0,0.5)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[4px_4px_0_rgba(0,0,0,0.5)] transition-transform">
+                  <ShoppingCart size={18} />
+                  Ver producto
+                </button>
+              )}
+            </div>
           </div>
         </div>
       </div>

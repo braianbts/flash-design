@@ -15,7 +15,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="es" className={jakarta.variable}>
       <body
-        className="bg-white text-black overflow-x-hidden font-sans"
+        className="bg-[#0a0a0a] text-white overflow-x-hidden font-sans"
         style={{ fontFamily: "var(--font-jakarta), sans-serif" }}
       >
         {/* Bordes azules laterales */}

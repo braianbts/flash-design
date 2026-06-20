@@ -134,7 +134,7 @@ export default function ProductPage({
 
   return (
     <>
-      <main className="min-h-screen bg-white pt-24 pb-20">
+      <main className="min-h-screen bg-[#0a0a0a] text-white pt-24 pb-20">
         <div className="max-w-6xl mx-auto px-6 md:px-12">
 
           {/* grid principal */}
@@ -143,7 +143,7 @@ export default function ProductPage({
             {/* ===== GALERÍA ===== */}
             <div className="space-y-4">
               {/* imagen principal */}
-              <div className="relative aspect-square rounded-2xl overflow-hidden border border-black/10 bg-neutral-50 shadow-[0_8px_30px_rgba(0,0,0,0.12)]">
+              <div className="relative aspect-square rounded-2xl overflow-hidden border border-white/10 bg-[#111] shadow-[0_8px_30px_rgba(0,0,0,0.5)]">
                 {images.length > 0 ? (
                   <Image
                     src={images[activeImage]?.src}
@@ -190,7 +190,7 @@ export default function ProductPage({
                       className={`relative w-16 h-16 rounded-lg overflow-hidden border-2 transition ${
                         i === activeImage
                           ? "border-[#2563EB] shadow-md"
-                          : "border-black/10 hover:border-black/30"
+                          : "border-white/10 hover:border-white/30"
                       }`}
                     >
                       <Image
@@ -232,7 +232,7 @@ export default function ProductPage({
               {/* variantes */}
               {variants.length > 1 && (
                 <div className="space-y-2">
-                  <p className="text-sm font-semibold uppercase tracking-wide text-neutral-600">
+                  <p className="text-sm font-semibold uppercase tracking-wide text-white/50">
                     Opciones
                   </p>
                   <div className="flex flex-wrap gap-2">
@@ -249,7 +249,7 @@ export default function ProductPage({
                           className={`px-4 py-2 text-sm font-semibold border-2 transition ${
                             i === selectedVariant
                               ? "border-[#2563EB] bg-[#2563EB] text-white"
-                              : "border-black/20 hover:border-black/60"
+                              : "border-white/20 text-white/70 hover:border-white/60"
                           }`}
                         >
                           {label}
@@ -263,17 +263,17 @@ export default function ProductPage({
               {/* descripción */}
               {description && (
                 <div className="space-y-1">
-                  <p className="text-sm font-semibold uppercase tracking-wide text-neutral-600">
+                  <p className="text-sm font-semibold uppercase tracking-wide text-white/50">
                     Descripción
                   </p>
-                  <p className="text-neutral-700 leading-relaxed text-sm md:text-base">
+                  <p className="text-white/60 leading-relaxed text-sm md:text-base">
                     {description}
                   </p>
                 </div>
               )}
 
               {/* divider */}
-              <div className="border-t border-black/10" />
+              <div className="border-t border-white/10" />
 
               {/* CTA */}
               <a
@@ -286,7 +286,7 @@ export default function ProductPage({
                 Comprar ahora
               </a>
 
-              <p className="text-xs text-neutral-400 text-center">
+              <p className="text-xs text-white/30 text-center">
                 Serás redirigido a la tienda para completar la compra.
               </p>
             </div>

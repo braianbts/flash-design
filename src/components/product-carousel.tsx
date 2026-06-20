@@ -90,13 +90,13 @@ export default function ProductCarousel({
 
   if (isLoading && !data) {
     return (
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-4">
         {Array.from({ length: Math.min(limit, 8) }).map((_, i) => (
-          <div key={i} className="rounded-md overflow-hidden bg-white shadow-md">
-            <div className="aspect-square bg-neutral-200 animate-pulse" />
+          <div key={i} className="rounded-xl overflow-hidden bg-[#111] border border-white/8">
+            <div className="aspect-square bg-white/5 animate-pulse" />
             <div className="p-3 md:p-4 space-y-2">
-              <div className="h-4 w-2/3 bg-neutral-200 animate-pulse rounded" />
-              <div className="h-4 w-1/3 bg-neutral-200 animate-pulse rounded" />
+              <div className="h-4 w-2/3 bg-white/10 animate-pulse rounded" />
+              <div className="h-4 w-1/3 bg-white/10 animate-pulse rounded" />
             </div>
           </div>
         ))}
@@ -109,7 +109,7 @@ export default function ProductCarousel({
   }
 
   return (
-    <div role="list" className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+    <div role="list" className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-4">
       {items.map((p, idx) => (
         <ProductCard
           key={p.id ?? idx}

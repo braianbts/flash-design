@@ -11,7 +11,7 @@ export default function AboutSection() {
 
           {/* Título grande desplazado a la izquierda dejando “hueco” para el logo */}
           <div className="md:pl-[210px]">
-            <div className="relative w-[420px] h-[95px] md:w-[650px] md:h-[180px]  -left-65 top-12">
+            <div className="relative w-full max-w-[420px] h-[70px] md:max-w-[650px] md:h-[180px] md:-left-65 md:top-12">
               <Image
                 src="/aboutme.png"
                 alt="About me"
@@ -36,18 +36,18 @@ export default function AboutSection() {
           </div>
 
         {/* === BLOQUE PRINCIPAL === */}
-        <div className="border-[2px] border-black bg-[#EFEFEF] shadow-[0_8px_25px_rgba(0,0,0,0.2)] p-3 md:p-4 rounded-sm">
+        <div className="border-[2px] border-white/10 bg-[#111] shadow-[0_8px_25px_rgba(0,0,0,0.6)] p-3 md:p-4 rounded-sm">
           {/* GRILLA */}
           <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
             {/* A1 */}
-            <article className="md:col-span-5 border border-black bg-white shadow-[0_4px_8px_rgba(0,0,0,0.1)]">
-              <div className="relative h-[205px] md:h-[230px] bg-[#D9D9D9]" />
-              <div className="flex items-center gap-3 border-t border-black/10 bg-[#ECECEC] px-3 py-2">
+            <article className="md:col-span-5 border border-white/8 bg-[#161616]">
+              <div className="relative h-[205px] md:h-[230px] bg-white/5" />
+              <div className="flex items-center gap-3 border-t border-white/8 bg-[#1a1a1a] px-3 py-2">
                 <span className="mt-4 flex items-center justify-center gap-2 w-full md:w-[100%] bg-[#2563EB] text-white font-extrabold text-base py-1 shadow-[6px_6px_0_#000] transition-transform">
                   Creaciones que cuentan una historia.
                 </span>
               </div>
-              <p className="px-3 pb-3 pt-2 text-[13.5px] leading-relaxed text-neutral-800">
+              <p className="px-3 pb-3 pt-2 text-[13.5px] leading-relaxed text-white/60">
                 Cada custom nace de una idea, un detalle o una vivencia. No son
                 simples zapatillas: son piezas únicas pensadas para transmitir
                 personalidad, estilo y momentos que marcan.
@@ -55,8 +55,8 @@ export default function AboutSection() {
             </article>
 
             {/* B1 */}
-            <article className="md:col-span-4 border border-black bg-white shadow-[0_4px_8px_rgba(0,0,0,0.1)]">
-              <div className="relative h-[115px] md:h-[135px] bg-[#D9D9D9]" />
+            <article className="md:col-span-4 border border-white/8 bg-[#161616]">
+              <div className="relative h-[115px] md:h-[135px] bg-white/5" />
               <div className="px-3 pb-3 pt-3">
                 <div className="w-full text-center">
               <span  className="mt-4 flex items-center justify-center gap-2 w-full md:w-[100%] bg-[#2563EB] text-white font-extrabold text-base py-1 shadow-[6px_6px_0_#000] transition-transform">
@@ -64,7 +64,7 @@ export default function AboutSection() {
                    Best Sellers de la casa.
                   </span>
                 </div>
-                <p className="mt-2 text-[13.5px] leading-relaxed text-neutral-800">
+                <p className="mt-2 text-[13.5px] leading-relaxed text-white/60">
                   Estos diseños se convirtieron en los más pedidos por nuestra
                   comunidad. Custom exclusivos que ya son parte del día a día de
                   artistas y referentes de la cultura urbana.
@@ -73,19 +73,19 @@ export default function AboutSection() {
             </article>
 
             {/* C1 */}
-            <article className="md:col-span-3 border border-black bg-white shadow-[0_4px_8px_rgba(0,0,0,0.1)]">
-              <div className="relative h-[365px] md:h-[390px] bg-[#D9D9D9]" />
+            <article className="md:col-span-3 border border-white/8 bg-[#161616]">
+              <div className="relative h-[365px] md:h-[390px] bg-white/5" />
             </article>
 
             {/* A2 */}
-            <article className="md:col-span-5 border border-black bg-white shadow-[0_4px_8px_rgba(0,0,0,0.1)]">
+            <article className="md:col-span-5 border border-white/8 bg-[#161616]">
               <div className="grid grid-cols-1 md:grid-cols-2">
-                <div className="relative h-[200px] md:h-[230px] bg-[#D9D9D9] border-b md:border-b-0 md:border-r border-black/15" />
+                <div className="relative h-[200px] md:h-[230px] bg-white/5 border-b md:border-b-0 md:border-r border-white/8" />
                 <div className="p-3">
                   <span className="mt-4 flex items-center justify-center gap-2 w-full md:w-[100%] bg-[#2563EB] text-white font-extrabold text-base py-1 shadow-[6px_6px_0_#000] transition-transform">
                     Detalles que importan.
                   </span>
-                  <p className="mt-2 text-[13.5px] leading-relaxed text-neutral-800">
+                  <p className="mt-2 text-[13.5px] leading-relaxed text-white/60">
                     Cada trazo, color y cada textura están pensados para que la
                     zapatilla no sea un accesorio más, sino una pieza de diseño
                     irrepetible. Diseños exclusivos que no se repiten. Una vez
@@ -97,14 +97,14 @@ export default function AboutSection() {
             </article>
 
             {/* B2 */}
-            <article className="md:col-span-4 border border-black bg-white shadow-[0_4px_8px_rgba(0,0,0,0.1)]">
-              <div className="relative h-[205px] md:h-[230px] bg-[#D9D9D9]" />
+            <article className="md:col-span-4 border border-white/8 bg-[#161616]">
+              <div className="relative h-[205px] md:h-[230px] bg-white/5" />
               <div className="px-3 pb-3 pt-2">
                               <span  className="mt-4 flex items-center justify-center gap-2 w-full md:w-[100%] bg-[#2563EB] text-white font-extrabold text-base py-1 shadow-[6px_6px_0_#000] transition-transform">
 
   De la calle para la calle.
                 </span>
-                <p className="mt-2 text-[13.5px] leading-relaxed text-neutral-800">
+                <p className="mt-2 text-[13.5px] leading-relaxed text-white/60">
                   Creamos para quienes buscan diferenciarse. Zapatillas hechas a
                   mano, con dedicación y estilo propio.
                 </p>
@@ -112,11 +112,11 @@ export default function AboutSection() {
             </article>
 
             {/* C2 */}
-            <article className="md:col-span-3 border border-black bg-white shadow-[0_4px_8px_rgba(0,0,0,0.1)] p-3">
+            <article className="md:col-span-3 border border-white/8 bg-[#161616] p-3">
               <span  className="mt-4 flex items-center justify-center gap-2 w-full md:w-[100%] bg-[#2563EB] text-white font-extrabold text-base py-1 shadow-[6px_6px_0_#000] transition-transform">
                 Ediciones limitadas.
               </span>
-              <p className="mt-2 text-[13.5px] leading-relaxed text-neutral-800">
+              <p className="mt-2 text-[13.5px] leading-relaxed text-white/60">
                 Cada par custom no es solo calzado, es una obra lista para
                 acompañarte en tu día a día.
               </p>

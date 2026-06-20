@@ -59,13 +59,16 @@ export default function CrossTapes({
     "before:content-[''] before:absolute before:inset-0 " +
     "before:bg-gradient-to-b before:from-white/15 before:via-transparent before:to-black/10 before:mix-blend-overlay";
 
+  // si offset es negativo las cintas quedarían fuera del contenedor
+  // compensamos desplazando todo hacia arriba
+  const shift = Math.min(realOffset, 0); // negativo o 0
+  const adjOffset = realOffset - shift;  // siempre >= 0
+  const totalHeight = adjOffset + realGap + height + 40;
+
   return (
     <div
-      className="absolute inset-x-0 pointer-events-none select-none z-40"
-      style={{
-        bottom: 0,
-        height: realOffset + realGap + height + 40, // altura dinámica
-      }}
+      className="relative w-full pointer-events-none select-none z-40"
+      style={{ height: totalHeight }}
     >
       {/* CINTA INFERIOR */}
       <div
@@ -73,7 +76,7 @@ export default function CrossTapes({
         style={{
           width: realWidth,
           height,
-          bottom: realOffset,
+          bottom: adjOffset,
           background: color,
           transform: `translateX(-10%) rotate(${angle}deg)`,
           filter: "drop-shadow(0 22px 40px rgba(0,0,0,.45))",
@@ -91,7 +94,7 @@ export default function CrossTapes({
         style={{
           width: realWidth,
           height,
-          bottom: realOffset + realGap,
+          bottom: adjOffset + realGap,
           background: color,
           transform: `translateX(-10%) rotate(${-angle}deg)`,
           filter:
