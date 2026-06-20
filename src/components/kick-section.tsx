@@ -24,7 +24,7 @@ export default function KickSection() {
       {/* ── IMAGEN: solo ocupa 55% derecho ── */}
       <div className="absolute right-0 top-0 bottom-0 w-[68%] z-[1]">
         <Image
-          src="/kick1.png"
+          src="/kick1.jpg"
           alt=""
           fill
           className="object-cover object-center"

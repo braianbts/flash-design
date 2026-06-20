@@ -39,7 +39,7 @@ export default function OpeningFlashSection() {
     >
       {/* Imagen de fondo */}
       <Image
-        src="/openingwebflash.png"
+        src="/openingwebflash.jpg"
         alt="Flash Opening"
         fill
         className={`

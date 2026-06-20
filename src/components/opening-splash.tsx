@@ -14,7 +14,7 @@ type OpeningSplashProps = {
 export default function OpeningSplash({
   durationMs = 2200,
   oncePerSession = true,
-  src = "/openingwebflash.png",
+  src = "/openingwebflash.jpg",
   enabled = true,
 }: OpeningSplashProps) {
   const [show, setShow] = useState(false);

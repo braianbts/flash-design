@@ -45,7 +45,7 @@ const SERVICES: Service[] = [
     id: "curso-sneaker-custom",
     label: "Curso sneaker custom",
     description: "Aprendé desde cero a customizar zapatillas con nuestra metodología profesional.",
-    image: "/openingwebflash.png", // TODO: reemplazar con foto del curso
+    image: "/openingwebflash.jpg", // TODO: reemplazar con foto del curso
     href: "https://cursosneakers.academikast.com?utm_source=ig&utm_medium=social&utm_content=link_in_bio&fbclid=PAZXh0bgNhZW0CMTEAc3J0YwZhcHBfaWQMMjU2MjgxMDQwNTU4AAGnsoEfUmEUoloQF8aD5NIKHaU3VPFrnLQeLfgtL3MWdGQeXtrNMbLCBaXcUYw_aem_g2XSD7SNr-sWlW6fhdgPXg",
   },
 ];
