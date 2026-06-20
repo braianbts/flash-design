@@ -71,7 +71,11 @@ export default function Footer() {
         {/* bottom */}
         <div className="mt-12 pt-6 border-t border-white/8 flex flex-col md:flex-row items-center justify-between gap-3">
           <p className="text-white/20 text-xs">© {new Date().getFullYear()} Flash Design. Todos los derechos reservados.</p>
-          <p className="text-white/20 text-xs">Hecho a mano en Argentina 🇦🇷</p>
+          <p className="text-white/20 text-xs">
+            Desarrollado por{" "}
+            <span className="text-white/40 font-semibold">Braian Yamil Barrientos</span>
+            {" "}— Buenos Aires, Argentina
+          </p>
         </div>
       </div>
     </footer>
