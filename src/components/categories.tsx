@@ -11,43 +11,16 @@ type Service = {
 };
 
 const SERVICES: Service[] = [
-  {
-    id: "custom-sneaker",
-    label: "Custom sneaker",
-    description: "Transformamos cualquier sneaker en una pieza única intervenida a mano, completamente personalizada según tu estilo.",
-    image: "/zapa1.jpg",       // TODO: reemplazar con foto de custom sneaker
-  },
-  {
-    id: "blackout-botines",
-    label: "Blackout botines",
-    description: "Botines totalmente blackeados con pinturas profesionales para alta resistencia. Perfectos para cancha y street.",
-    image: "/IMG1.jpg",        // TODO: reemplazar con foto blackout
-  },
-  {
-    id: "custom-canvas-lujo",
-    label: "Custom canvas de lujo",
-    description: "Intervenimos piezas con canvas premium de lujo manteniendo calidad, detalle y durabilidad en cada accesorio.",
-    image: "/canvas.jpg",      // TODO: reemplazar con foto canvas lujo
-  },
-  {
-    id: "custom-just-married",
-    label: "Custom Just Married",
-    description: "Zapatillas personalizadas para novios. Un recuerdo único de un día inolvidable.",
-    image: "/fileteado.jpg",   // TODO: reemplazar con foto just married
-  },
-  {
-    id: "custom-cambio-materiales",
-    label: "Custom cambio de materiales",
-    description: "Restauración o reemplazo de materiales premium en sneakers: cuero, gamuza, canvas y más.",
-    image: "/duki.jpeg",       // TODO: reemplazar con foto cambio materiales
-  },
-  {
-    id: "curso-sneaker-custom",
-    label: "Curso sneaker custom",
-    description: "Aprendé desde cero a customizar zapatillas con nuestra metodología profesional.",
-    image: "/openingwebflash.jpg", // TODO: reemplazar con foto del curso
-    href: "https://cursosneakers.academikast.com?utm_source=ig&utm_medium=social&utm_content=link_in_bio&fbclid=PAZXh0bgNhZW0CMTEAc3J0YwZhcHBfaWQMMjU2MjgxMDQwNTU4AAGnsoEfUmEUoloQF8aD5NIKHaU3VPFrnLQeLfgtL3MWdGQeXtrNMbLCBaXcUYw_aem_g2XSD7SNr-sWlW6fhdgPXg",
-  },
+  { id: "s1",  label: "Servicio 1",  description: "Descripción próximamente.", image: "/srv-1.jpg"  },
+  { id: "s1a", label: "Servicio 1A", description: "Descripción próximamente.", image: "/srv-1a.jpg" },
+  { id: "s2",  label: "Servicio 2",  description: "Descripción próximamente.", image: "/srv-2.jpg"  },
+  { id: "s2a", label: "Servicio 2A", description: "Descripción próximamente.", image: "/srv-2a.jpg" },
+  { id: "s2b", label: "Servicio 2B", description: "Descripción próximamente.", image: "/srv-2b.jpg" },
+  { id: "s3",  label: "Servicio 3",  description: "Descripción próximamente.", image: "/srv-3.jpg"  },
+  { id: "s3a", label: "Servicio 3A", description: "Descripción próximamente.", image: "/srv-3a.jpg" },
+  { id: "s3b", label: "Servicio 3B", description: "Descripción próximamente.", image: "/srv-3b.jpg" },
+  { id: "s4",  label: "Servicio 4",  description: "Descripción próximamente.", image: "/srv-4.jpg"  },
+  { id: "s5",  label: "Servicio 5",  description: "Descripción próximamente.", image: "/srv-5.jpg"  },
 ];
 
 export default function CategoriesSection() {
