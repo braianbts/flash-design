@@ -48,8 +48,8 @@ export default function NewArrivalsSection() {
           </div>
         </div>
 
-        <div className="px-10 pb-10 pt-4 md:px-20">
-          <ProductCarousel tag="landing-featured" limit={8} />
+        <div className="pb-10 pt-4">
+          <ProductCarousel />
         </div>
       </div>
     </section>

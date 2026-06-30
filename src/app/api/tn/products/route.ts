@@ -6,9 +6,9 @@ export const runtime = "nodejs";
 export async function GET(req: NextRequest) {
   try {
     const url = new URL(req.url);
-    const limit = Math.min(Number(url.searchParams.get("limit") ?? "10"), 50);
+    const limit = Math.min(Number(url.searchParams.get("limit") ?? "50"), 200);
+    const categoryId = url.searchParams.get("category_id") ?? "";
 
-    // Leemos cookies desde el request
     const cookieStoreId = req.cookies.get("tn_store_id")?.value;
     const cookieToken = req.cookies.get("tn_access_token")?.value;
 
@@ -34,7 +34,9 @@ export async function GET(req: NextRequest) {
       );
     }
 
-    const apiUrl = `https://api.tiendanube.com/v1/${storeId}/products?per_page=${limit}`;
+    const qs = new URLSearchParams({ per_page: String(limit) });
+    if (categoryId) qs.set("category_id", categoryId);
+    const apiUrl = `https://api.tiendanube.com/v1/${storeId}/products?${qs}`;
 
     const headers: Record<string, string> = {
       Accept: "application/json",

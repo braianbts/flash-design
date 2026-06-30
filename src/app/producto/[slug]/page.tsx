@@ -137,6 +137,14 @@ export default function ProductPage({
       <main className="min-h-screen bg-[#0a0a0a] text-white pt-24 pb-20">
         <div className="max-w-6xl mx-auto px-6 md:px-12">
 
+          {/* volver */}
+          <button
+            onClick={() => window.history.back()}
+            className="inline-flex items-center gap-2 text-white/40 text-xs font-bold uppercase tracking-widest hover:text-white transition-colors mb-10"
+          >
+            <ChevronLeft size={14} /> Volver
+          </button>
+
           {/* grid principal */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-start">
 
@@ -149,7 +157,7 @@ export default function ProductPage({
                     src={images[activeImage]?.src}
                     alt={name}
                     fill
-                    className="object-contain p-4"
+                    className="object-cover"
                     priority
                     sizes="(max-width:768px) 100vw, 50vw"
                   />
@@ -164,17 +172,19 @@ export default function ProductPage({
                   <>
                     <button
                       onClick={prevImage}
-                      className="absolute left-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-white border border-black/10 shadow flex items-center justify-center hover:bg-neutral-100 transition"
+                      className="absolute left-3 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full flex items-center justify-center transition hover:scale-110"
+                      style={{ background: "rgba(0,0,0,0.6)", border: "1px solid rgba(255,255,255,0.2)", backdropFilter: "blur(8px)" }}
                       aria-label="Imagen anterior"
                     >
-                      <ChevronLeft size={18} />
+                      <ChevronLeft size={20} color="#fff" />
                     </button>
                     <button
                       onClick={nextImage}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-white border border-black/10 shadow flex items-center justify-center hover:bg-neutral-100 transition"
+                      className="absolute right-3 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full flex items-center justify-center transition hover:scale-110"
+                      style={{ background: "rgba(0,0,0,0.6)", border: "1px solid rgba(255,255,255,0.2)", backdropFilter: "blur(8px)" }}
                       aria-label="Imagen siguiente"
                     >
-                      <ChevronRight size={18} />
+                      <ChevronRight size={20} color="#fff" />
                     </button>
                   </>
                 )}
