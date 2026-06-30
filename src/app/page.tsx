@@ -42,6 +42,7 @@ import NewArrivalsSection from "@/components/new-arrivals";
 import CategoriesSection from "@/components/categories";
 import FeaturedProduct from "@/components/featuredproduct";
 import HighlightsSection from "@/components/highlights-section";
+import MomentosSection from "@/components/momentos-section";
 import Footer from "@/components/footer";
 import OpeningFlashSection from "@/components/OpeningFlashSection";
 import KickSection from "@/components/kick-section";
@@ -97,6 +98,8 @@ function HomeContent() {
           offset={80}
           gap={8}
         />
+
+        <MomentosSection />
 
         <ScrollReveal delay={100}>
           <HighlightsSection />

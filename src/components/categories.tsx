@@ -6,133 +6,265 @@ type Service = {
   id: string;
   label: string;
   description: string;
-  image: string;
+  images: string[];
   href?: string;
 };
 
 const SERVICES: Service[] = [
-  { id: "s1",  label: "Servicio 1",  description: "Descripción próximamente.", image: "/srv-1.jpg"  },
-  { id: "s1a", label: "Servicio 1A", description: "Descripción próximamente.", image: "/srv-1a.jpg" },
-  { id: "s2",  label: "Servicio 2",  description: "Descripción próximamente.", image: "/srv-2.jpg"  },
-  { id: "s2a", label: "Servicio 2A", description: "Descripción próximamente.", image: "/srv-2a.jpg" },
-  { id: "s2b", label: "Servicio 2B", description: "Descripción próximamente.", image: "/srv-2b.jpg" },
-  { id: "s3",  label: "Servicio 3",  description: "Descripción próximamente.", image: "/srv-3.jpg"  },
-  { id: "s3a", label: "Servicio 3A", description: "Descripción próximamente.", image: "/srv-3a.jpg" },
-  { id: "s3b", label: "Servicio 3B", description: "Descripción próximamente.", image: "/srv-3b.jpg" },
-  { id: "s4",  label: "Servicio 4",  description: "Descripción próximamente.", image: "/srv-4.jpg"  },
-  { id: "s5",  label: "Servicio 5",  description: "Descripción próximamente.", image: "/srv-5.jpg"  },
+  { id: "s1", label: "Servicio 1", description: "Descripción próximamente.", images: ["/srv-1.jpg", "/srv-1a.jpg"] },
+  { id: "s2", label: "Servicio 2", description: "Descripción próximamente.", images: ["/srv-2.jpg", "/srv-2a.jpg", "/srv-2b.jpg"] },
+  { id: "s3", label: "Servicio 3", description: "Descripción próximamente.", images: ["/srv-3.jpg", "/srv-3a.jpg", "/srv-3b.jpg"] },
+  { id: "s4", label: "Servicio 4", description: "Descripción próximamente.", images: ["/srv-4.jpg"] },
+  { id: "s5", label: "Servicio 5", description: "Descripción próximamente.", images: ["/srv-5.jpg"] },
 ];
 
 export default function CategoriesSection() {
   const [active, setActive] = useState<Service>(SERVICES[0]);
+  const [imgIndex, setImgIndex] = useState(0);
   const activeIndex = SERVICES.findIndex((s) => s.id === active.id);
 
+  const selectService = (s: Service) => {
+    setActive(s);
+    setImgIndex(0);
+  };
+
+  const prevImg = () => setImgIndex((i) => (i - 1 + active.images.length) % active.images.length);
+  const nextImg = () => setImgIndex((i) => (i + 1) % active.images.length);
+
+  const num = String(activeIndex + 1).padStart(2, "0");
+
   return (
-    <section id="categories" className="relative w-full overflow-hidden bg-[#0a0a0a] py-24 md:py-32">
+    <section id="categories" className="relative w-full bg-[#080808] overflow-hidden">
 
-      {/* destellos de fondo */}
-      <div aria-hidden className="pointer-events-none absolute inset-0">
-        <div
-          className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] rounded-full blur-[120px] opacity-15 transition-all duration-700"
-          style={{ background: "#2563EB", transform: `translateX(calc(-50% + ${(activeIndex - 2) * 60}px))` }}
-        />
-        <div className="absolute bottom-0 right-0 w-[300px] h-[300px] rounded-full blur-[100px] opacity-8"
-          style={{ background: "#4d87f5" }} />
-      </div>
-
-      <div className="relative z-10 mx-auto max-w-6xl px-8 md:px-16">
-
-        {/* header */}
-        <div className="mb-14 md:mb-18">
-          <p className="text-[#2563EB] text-xs font-bold uppercase tracking-[0.3em] mb-4">— Servicios</p>
-          <h2 className="text-4xl md:text-6xl font-extrabold uppercase leading-[0.9] tracking-tight text-white">
+      {/* ─── MOBILE ─── stack: header / image / service tabs */}
+      <div className="block md:hidden">
+        {/* header mobile */}
+        <div className="px-6 pt-16 pb-8">
+          <p className="text-[#2563EB] text-[10px] font-bold uppercase tracking-[0.3em] mb-3">— Servicios</p>
+          <h2 className="text-5xl font-extrabold uppercase leading-[0.88] tracking-tight text-white">
             Lo que<br />
-            <span className="text-white/25">hago.</span>
+            <span className="text-white/20">hago.</span>
           </h2>
         </div>
 
-        {/* grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-start">
+        {/* imagen mobile — full width, tall */}
+        <div className="relative w-full aspect-[4/3] overflow-hidden">
+          <Image
+            key={`m-${active.id}-${imgIndex}`}
+            src={active.images[imgIndex]}
+            alt={active.label}
+            fill
+            className="object-cover"
+            priority
+          />
+          {/* overlay gradient bottom */}
+          <div className="absolute inset-0 pointer-events-none bg-gradient-to-t from-[#080808] via-transparent to-transparent" />
 
-          {/* lista de servicios */}
-          <ul className="space-y-1">
+          {/* número fantasma */}
+          <div className="absolute top-4 right-5 text-[90px] font-extrabold leading-none text-white/5 select-none pointer-events-none">
+            {num}
+          </div>
+
+          {/* flechas */}
+          {active.images.length > 1 && (
+            <>
+              <button onClick={prevImg}
+                className="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full flex items-center justify-center"
+                style={{ background: "rgba(0,0,0,0.65)", border: "1px solid rgba(255,255,255,0.18)", backdropFilter: "blur(8px)" }}>
+                <span className="text-white text-base">‹</span>
+              </button>
+              <button onClick={nextImg}
+                className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full flex items-center justify-center"
+                style={{ background: "rgba(0,0,0,0.65)", border: "1px solid rgba(255,255,255,0.18)", backdropFilter: "blur(8px)" }}>
+                <span className="text-white text-base">›</span>
+              </button>
+            </>
+          )}
+
+          {/* dots + counter */}
+          <div className="absolute bottom-4 left-0 right-0 flex flex-col items-center gap-2">
+            {active.images.length > 1 && (
+              <div className="flex gap-1.5">
+                {active.images.map((_, idx) => (
+                  <button key={idx} onClick={() => setImgIndex(idx)}
+                    className={`rounded-full transition-all ${idx === imgIndex ? "w-4 h-1.5 bg-[#2563EB]" : "w-1.5 h-1.5 bg-white/30"}`} />
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* label activo */}
+          <div className="absolute bottom-6 left-5">
+            <span className="text-white text-sm font-bold uppercase tracking-widest">{active.label}</span>
+            {active.description && (
+              <p className="text-white/40 text-xs mt-0.5 max-w-[200px]">{active.description}</p>
+            )}
+          </div>
+        </div>
+
+        {/* service tabs mobile */}
+        <div className="px-4 pt-6 pb-16 space-y-1">
+          {SERVICES.map((s, i) => {
+            const isActive = active.id === s.id;
+            return (
+              <button key={s.id} onClick={() => selectService(s)}
+                className={`w-full flex items-center gap-4 px-4 py-4 rounded-xl border transition-all duration-300 text-left ${
+                  isActive
+                    ? "bg-[#2563EB]/10 border-[#2563EB]/40"
+                    : "border-white/6 hover:border-white/15 bg-transparent"
+                }`}>
+                <span className={`text-xs font-bold tabular-nums w-6 shrink-0 ${isActive ? "text-[#2563EB]" : "text-white/25"}`}>
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <span className={`font-extrabold uppercase tracking-wide text-sm flex-1 ${isActive ? "text-white" : "text-white/35"}`}>
+                  {s.label}
+                </span>
+                {isActive && <span className="text-[#2563EB] text-sm">→</span>}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* ─── DESKTOP ─── full viewport height split layout */}
+      <div className="hidden md:grid md:grid-cols-[1fr_1fr] h-screen max-h-screen">
+
+        {/* col izquierda — navegación */}
+        <div className="relative flex flex-col justify-between px-16 xl:px-20 py-10 h-full overflow-hidden z-10">
+
+          {/* header */}
+          <div>
+            <p className="text-[#2563EB] text-[10px] font-bold uppercase tracking-[0.35em] mb-6">— Servicios</p>
+            <h2 className="text-[clamp(2.5rem,4.5vw,4rem)] font-extrabold uppercase leading-[0.85] tracking-tight text-white mb-8">
+              Lo que<br />
+              <span className="text-white/18">hago.</span>
+            </h2>
+          </div>
+
+          {/* lista servicios */}
+          <div className="flex-1 flex flex-col justify-center space-y-0">
             {SERVICES.map((s, i) => {
               const isActive = active.id === s.id;
-              const Tag = s.href ? "a" : "button";
-              const extraProps = s.href ? { href: s.href, target: "_blank", rel: "noreferrer" } : {};
-
               return (
-                <li key={s.id}>
-                  <Tag
-                    {...(extraProps as any)}
-                    onClick={() => setActive(s)}
-                    className={`group flex items-center gap-4 w-full text-left py-4 border-b transition-all duration-300 ${
-                      isActive
-                        ? "border-[#2563EB]/40"
-                        : "border-white/8 hover:border-white/20"
-                    }`}
-                  >
-                    {/* número */}
-                    <span className={`text-xs font-bold tabular-nums transition-colors duration-300 w-6 shrink-0 ${
-                      isActive ? "text-[#2563EB]" : "text-white/20 group-hover:text-white/40"
-                    }`}>
-                      {String(i + 1).padStart(2, "0")}
-                    </span>
+                <button
+                  key={s.id}
+                  onClick={() => selectService(s)}
+                  className={`group relative flex items-center gap-6 py-3 xl:py-4 border-b text-left transition-all duration-300 ${
+                    isActive ? "border-[#2563EB]/30" : "border-white/6 hover:border-white/15"
+                  }`}
+                >
+                  {/* barra lateral activo */}
+                  {isActive && (
+                    <span className="absolute left-0 top-0 bottom-0 w-[3px] bg-[#2563EB] rounded-full" />
+                  )}
 
-                    {/* label */}
-                    <span className={`font-extrabold uppercase tracking-wide text-base md:text-lg transition-colors duration-300 flex-1 ${
-                      isActive ? "text-white" : "text-white/35 group-hover:text-white/70"
+                  <span className={`text-xs font-bold tabular-nums w-7 shrink-0 pl-4 transition-colors duration-300 ${
+                    isActive ? "text-[#2563EB]" : "text-white/20 group-hover:text-white/40"
+                  }`}>
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+
+                  <div className="flex-1 min-w-0">
+                    <span className={`block font-extrabold uppercase tracking-wide text-lg xl:text-xl transition-all duration-300 ${
+                      isActive ? "text-white" : "text-white/30 group-hover:text-white/60"
                     }`}>
                       {s.label}
                     </span>
+                    {isActive && s.description && (
+                      <span className="block text-white/40 text-xs mt-1 font-normal normal-case tracking-normal">
+                        {s.description}
+                      </span>
+                    )}
+                  </div>
 
-                    {/* flecha activa */}
-                    <span className={`text-[#2563EB] transition-all duration-300 ${
-                      isActive ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-2"
-                    }`}>
-                      →
+                  {/* dots fotos */}
+                  {s.images.length > 1 && (
+                    <span className="flex gap-1 shrink-0">
+                      {s.images.map((_, idx) => (
+                        <span key={idx} className={`rounded-full transition-all ${
+                          isActive && imgIndex === idx
+                            ? "w-3 h-1.5 bg-[#2563EB]"
+                            : "w-1.5 h-1.5 bg-white/15"
+                        }`} />
+                      ))}
                     </span>
-                  </Tag>
-                </li>
+                  )}
+
+                  <span className={`text-[#2563EB] text-lg shrink-0 transition-all duration-300 ${
+                    isActive ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-3"
+                  }`}>→</span>
+                </button>
               );
             })}
-          </ul>
-
-          {/* imagen + descripción */}
-          <div className="space-y-6 md:sticky md:top-24">
-            <div className="relative aspect-[4/3] w-full rounded-2xl overflow-hidden bg-[#111]">
-              <Image
-                key={active.id}
-                src={active.image}
-                alt={active.label}
-                fill
-                className="object-cover transition-opacity duration-500"
-                priority
-              />
-              {/* overlay sutil con nombre */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
-              <div className="absolute bottom-5 left-5">
-                <span className="text-white/50 text-xs uppercase tracking-widest">
-                  {active.label}
-                </span>
-              </div>
-            </div>
-
-            <p className="text-white/50 text-sm leading-relaxed">
-              {active.description}
-            </p>
-
-            {active.href && (
-              <a
-                href={active.href}
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex items-center gap-2 text-[#2563EB] text-sm font-bold uppercase tracking-widest hover:text-white transition-colors"
-              >
-                Ver curso →
-              </a>
-            )}
           </div>
+
+          {/* footer info */}
+          <div className="mt-12">
+            <p className="text-white/15 text-xs uppercase tracking-widest">Flash Design · Buenos Aires</p>
+          </div>
+        </div>
+
+        {/* col derecha — imagen full height */}
+        <div className="relative overflow-hidden">
+          {/* imagen */}
+          <Image
+            key={`d-${active.id}-${imgIndex}`}
+            src={active.images[imgIndex]}
+            alt={active.label}
+            fill
+            className="object-cover transition-opacity duration-500"
+            priority
+            sizes="50vw"
+          />
+
+          {/* overlay gradientes */}
+          <div className="absolute inset-0 pointer-events-none bg-gradient-to-r from-[#080808] via-transparent to-transparent" style={{ width: "30%" }} />
+          <div className="absolute inset-0 pointer-events-none bg-gradient-to-t from-black/70 via-transparent to-transparent" />
+          <div className="absolute inset-0 pointer-events-none bg-gradient-to-b from-black/30 via-transparent to-transparent" />
+
+          {/* número fantasma */}
+          <div className="absolute top-12 right-10 text-[160px] xl:text-[200px] font-extrabold leading-none text-white/4 select-none pointer-events-none">
+            {num}
+          </div>
+
+          {/* label activo — esquina inferior izquierda */}
+          <div className="absolute bottom-10 left-10 right-10">
+            <span className="block text-white/40 text-[10px] font-bold uppercase tracking-[0.3em] mb-1">
+              {active.label}
+            </span>
+            <span className="block text-white text-2xl xl:text-3xl font-extrabold uppercase tracking-tight leading-tight">
+              {active.description}
+            </span>
+          </div>
+
+          {/* flechas navegación fotos */}
+          {active.images.length > 1 && (
+            <div className="absolute bottom-10 right-10 flex gap-2">
+              <button onClick={prevImg}
+                className="w-11 h-11 rounded-full flex items-center justify-center transition hover:scale-110"
+                style={{ background: "rgba(0,0,0,0.65)", border: "1px solid rgba(255,255,255,0.2)", backdropFilter: "blur(8px)" }}>
+                <span className="text-white">‹</span>
+              </button>
+              <button onClick={nextImg}
+                className="w-11 h-11 rounded-full flex items-center justify-center transition hover:scale-110"
+                style={{ background: "rgba(0,0,0,0.65)", border: "1px solid rgba(255,255,255,0.2)", backdropFilter: "blur(8px)" }}>
+                <span className="text-white">›</span>
+              </button>
+              <span className="self-center text-white/30 text-xs ml-1 tabular-nums">
+                {imgIndex + 1}/{active.images.length}
+              </span>
+            </div>
+          )}
+
+          {/* dots imagen */}
+          {active.images.length > 1 && (
+            <div className="absolute top-10 right-10 flex flex-col gap-1.5">
+              {active.images.map((_, idx) => (
+                <button key={idx} onClick={() => setImgIndex(idx)}
+                  className={`rounded-full transition-all ${idx === imgIndex ? "h-4 w-1.5 bg-white" : "h-1.5 w-1.5 bg-white/30"}`} />
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </section>

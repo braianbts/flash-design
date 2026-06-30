@@ -8,6 +8,8 @@ export default function CustomCursor() {
   const [clicking, setClicking] = useState(false);
 
   useEffect(() => {
+    if (window.matchMedia("(pointer: coarse)").matches) return;
+
     document.documentElement.style.cursor = "none";
 
     const dot = dotRef.current;
