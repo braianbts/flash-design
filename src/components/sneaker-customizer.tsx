@@ -354,7 +354,7 @@ export default function SneakerCustomizer() {
               ↓ Descargar imagen
             </button>
             <a
-              href={`https://wa.me/5491100000000?text=${encodeURIComponent("Hola! Diseñé mi custom Air Force 1 en tu web. Te mando la imagen por acá 👟🎨")}`}
+              href={`https://wa.me/5491151370031?text=${encodeURIComponent("Hola! Diseñé mi custom Air Force 1 en tu web. Te mando la imagen por acá 👟🎨")}`}
               target="_blank"
               rel="noreferrer"
               className="block w-full bg-[#2563EB] text-white font-extrabold text-sm uppercase tracking-widest text-center py-3.5 hover:bg-blue-700 transition-colors"

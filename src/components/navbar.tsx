@@ -82,7 +82,7 @@ export default function Navbar() {
             </Link>
           ))}
           <a
-            href="https://wa.me/5491100000000"
+            href="https://wa.me/5491151370031"
             target="_blank"
             rel="noreferrer"
             className="text-sm font-extrabold uppercase tracking-wide px-4 py-1.5 bg-[#2563EB] text-white hover:bg-blue-700 transition-colors"
@@ -119,7 +119,7 @@ export default function Navbar() {
             </Link>
           ))}
           <a
-            href="https://wa.me/5491100000000"
+            href="https://wa.me/5491151370031"
             target="_blank"
             rel="noreferrer"
             onClick={() => setOpen(false)}

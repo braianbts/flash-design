@@ -4,12 +4,33 @@ import { useEffect, useRef, useState } from "react";
 import { X } from "lucide-react";
 
 const ITEMS = [
-  { num: "01", cat: "Custom", title: "Proyecto 1", desc: "Descripción próximamente.", src: "/dest-1.jpg", style: "white" },
-  { num: "02", cat: "Custom", title: "Proyecto 2", desc: "Descripción próximamente.", src: "/dest-2.jpg", style: "gradient" },
-  { num: "03", cat: "Custom", title: "Proyecto 3", desc: "Descripción próximamente.", src: "/dest-3.jpg", style: "gradient" },
-  { num: "04", cat: "Custom", title: "Proyecto 4", desc: "Descripción próximamente.", src: "/dest-4.jpg", style: "dark" },
-  { num: "05", cat: "Custom", title: "Proyecto 5", desc: "Descripción próximamente.", src: "/dest-5.jpg", style: "gradient" },
-  { num: "06", cat: "Custom", title: "Proyecto 6", desc: "Descripción próximamente.", src: "/dest-6.jpg", style: "dark" },
+  {
+    num: "01",
+    cat: "Fileteado Porteño × Nike",
+    title: "Alfredo Genovese",
+    desc: "En 2024 me junté junto al maestro del fileteado, Alfredo Genovese, y creamos un diseño inspirado en su participación con Nike en 2006 sobre unas Dunk Low. Una de las experiencias más gratificantes de mi carrera ya que junta mi pasión por el calzado y mis raíces argentinas.",
+    src: "/dest-1.jpg",
+    images: ["/dest-1.jpg"],
+    style: "white",
+  },
+  {
+    num: "02",
+    cat: "Nike × Air Max Day 2026",
+    title: "Total 90 Air Max 95",
+    desc: "En 2026 colaboré con Nike a nivel local en el contexto del Air Max Day 2026. Una celebración mítica de la marca originaria de Oregón. Fusionamos los míticos botines Total 90 con la suela de las legendarias Air Max 95. Este par fue presentado en el Nike de Alto.",
+    src: "/dest-2.jpg",
+    images: ["/dest-2.jpg", "/dest-6.jpg"],
+    style: "gradient",
+  },
+  {
+    num: "03",
+    cat: "Adidas × Home of Classic",
+    title: "Duki · Emilia · Bizarrap · Paulo Londra",
+    desc: 'En 2023 me contactó Adidas para realizar 4 customizaciones para sus artistas principales: Duki, Emilia, Bizarrap y Paulo Londra. Los 4 diseños fueron pensados y ejecutados por mí en el marco de la campaña “Home of Classic”.',
+    src: "/dest-4.jpg",
+    images: ["/dest-4.jpg"],
+    style: "dark",
+  },
 ];
 
 type Item = typeof ITEMS[0];
@@ -18,6 +39,7 @@ function Card({ item, className = "", numClass = "", onOpen }: { item: Item; cla
   const isWhite = item.style === "white";
   const isGradient = item.style === "gradient";
   const isDark = item.style === "dark";
+  const [imgIdx, setImgIdx] = useState(0);
 
   const bg = isGradient
     ? "linear-gradient(135deg, #0d2260 0%, #1a3fa8 40%, #2563EB 70%, #1e50c8 100%)"
@@ -25,11 +47,20 @@ function Card({ item, className = "", numClass = "", onOpen }: { item: Item; cla
     ? "#ffffff"
     : "#111111";
 
+  const prevImg = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setImgIdx((i) => (i - 1 + item.images.length) % item.images.length);
+  };
+  const nextImg = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setImgIdx((i) => (i + 1) % item.images.length);
+  };
+
   return (
     <article
       onClick={() => onOpen(item)}
       className={`group relative rounded-3xl overflow-hidden cursor-pointer ${className}`}
-      style={{ background: bg, minHeight: 220 }}
+      style={{ background: bg }}
     >
       {/* bokeh blobs — solo gradient */}
       {isGradient && (
@@ -43,13 +74,13 @@ function Card({ item, className = "", numClass = "", onOpen }: { item: Item; cla
         </div>
       )}
 
-      {/* foto como textura */}
+      {/* foto como textura — cambia con imgIdx */}
       <div className={`absolute inset-0 transition-opacity duration-500 ${
-        isWhite ? "opacity-20 group-hover:opacity-30 mix-blend-multiply" :
-        isGradient ? "opacity-20 group-hover:opacity-30 mix-blend-luminosity" :
-        "opacity-15 group-hover:opacity-25"
+        isWhite ? "opacity-35 group-hover:opacity-50 mix-blend-multiply" :
+        isGradient ? "opacity-30 group-hover:opacity-45 mix-blend-luminosity" :
+        "opacity-40 group-hover:opacity-55"
       }`}>
-        <Image src={item.src} alt={item.title} fill className="object-cover transition-transform duration-700 group-hover:scale-105" sizes="600px" />
+        <Image key={imgIdx} src={item.images[imgIdx]} alt={item.title} fill className="object-cover transition-transform duration-700 group-hover:scale-105" sizes="800px" />
       </div>
 
       {/* overlay dark card */}
@@ -58,8 +89,8 @@ function Card({ item, className = "", numClass = "", onOpen }: { item: Item; cla
       {/* borde glow hover */}
       <div className="absolute inset-0 rounded-3xl ring-0 group-hover:ring-1 ring-white/20 transition-all duration-300 pointer-events-none" />
 
-      {/* contenido */}
-      <div className={`relative z-10 p-7 md:p-8 h-full flex flex-col justify-between min-h-[220px] md:min-h-[260px]`}>
+      {/* contenido — sin min-height fija para que crezca en mobile */}
+      <div className="relative z-10 p-7 md:p-8 flex flex-col gap-4 min-h-[220px] md:min-h-[260px]">
         <span className={`font-extrabold leading-none ${numClass || "text-5xl md:text-6xl"} ${
           isWhite ? "text-[#2563EB]" :
           isGradient ? "text-white/40" :
@@ -67,17 +98,46 @@ function Card({ item, className = "", numClass = "", onOpen }: { item: Item; cla
         }`}>
           {item.num}
         </span>
-        <div className="translate-y-1 group-hover:translate-y-0 transition-transform duration-300">
+
+        <div className="flex-1" />
+
+        <div>
           <p className={`text-xs uppercase tracking-widest mb-2 ${
             isWhite ? "text-black/30" : isGradient ? "text-white/50" : "text-white/30"
           }`}>{item.cat}</p>
-          <h3 className={`font-extrabold text-xl md:text-2xl uppercase leading-tight ${
+          <h3 className={`font-extrabold text-xl md:text-2xl uppercase leading-tight mb-3 ${
             isWhite ? "text-black" : "text-white"
           }`}>{item.title}</h3>
-          <p className={`text-[10px] uppercase tracking-widest mt-2 opacity-0 group-hover:opacity-100 transition-all duration-300 ${
+          {/* descripción visible en mobile, oculta en desktop (solo en modal) */}
+          <p className={`text-xs leading-relaxed md:hidden ${
+            isWhite ? "text-black/50" : isGradient ? "text-white/60" : "text-white/50"
+          }`}>{item.desc}</p>
+          <p className={`hidden md:block text-[10px] uppercase tracking-widest mt-2 opacity-0 group-hover:opacity-100 transition-all duration-300 ${
             isWhite ? "text-black/40" : "text-white/40"
           }`}>Ver detalle →</p>
         </div>
+
+        {/* slider dots + flechas — solo si hay varias imágenes */}
+        {item.images.length > 1 && (
+          <div className="flex items-center gap-2 mt-1" onClick={(e) => e.stopPropagation()}>
+            <button onClick={prevImg}
+              className="w-7 h-7 rounded-full flex items-center justify-center text-sm transition hover:scale-110"
+              style={{ background: "rgba(0,0,0,0.4)", border: "1px solid rgba(255,255,255,0.2)" }}>
+              ‹
+            </button>
+            <div className="flex gap-1.5">
+              {item.images.map((_, i) => (
+                <button key={i} onClick={(e) => { e.stopPropagation(); setImgIdx(i); }}
+                  className={`rounded-full transition-all ${i === imgIdx ? "w-4 h-1.5 bg-[#2563EB]" : "w-1.5 h-1.5 bg-white/30"}`} />
+              ))}
+            </div>
+            <button onClick={nextImg}
+              className="w-7 h-7 rounded-full flex items-center justify-center text-sm transition hover:scale-110"
+              style={{ background: "rgba(0,0,0,0.4)", border: "1px solid rgba(255,255,255,0.2)" }}>
+              ›
+            </button>
+          </div>
+        )}
       </div>
     </article>
   );
@@ -87,6 +147,7 @@ export default function HighlightsRow() {
   const sectionRef = useRef<HTMLElement>(null);
   const gridRef = useRef<HTMLDivElement>(null);
   const [modal, setModal] = useState<Item | null>(null);
+  const [modalImg, setModalImg] = useState(0);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -134,17 +195,17 @@ export default function HighlightsRow() {
             </p>
           </div>
 
-          {/* BENTO */}
+          {/* BENTO — 3 proyectos */}
           <div
             ref={gridRef}
             className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-5 opacity-0 translate-y-6 transition-all duration-1000 ease-out"
           >
-            <Card item={ITEMS[0]} onOpen={setModal} />
-            <Card item={ITEMS[1]} className="md:col-span-2" numClass="text-5xl md:text-7xl" onOpen={setModal} />
-            <Card item={ITEMS[2]} className="md:col-span-2" onOpen={setModal} />
-            <Card item={ITEMS[3]} onOpen={setModal} />
-            <Card item={ITEMS[4]} onOpen={setModal} />
-            <Card item={ITEMS[5]} className="md:col-span-2" onOpen={setModal} />
+            {/* 01 — 1 col */}
+            <Card item={ITEMS[0]} onOpen={(i) => { setModalImg(0); setModal(i); }} />
+            {/* 02 — 2 cols, más ancho */}
+            <Card item={ITEMS[1]} className="md:col-span-2" numClass="text-5xl md:text-7xl" onOpen={(i) => { setModalImg(0); setModal(i); }} />
+            {/* 03 — full width */}
+            <Card item={ITEMS[2]} className="md:col-span-3" numClass="text-5xl md:text-8xl" onOpen={(i) => { setModalImg(0); setModal(i); }} />
           </div>
         </div>
 
@@ -196,9 +257,9 @@ export default function HighlightsRow() {
           <div className="modal-backdrop absolute inset-0 bg-black/80 backdrop-blur-md" />
 
           <div
-            className="modal-panel relative z-10 w-full max-w-3xl rounded-2xl overflow-hidden border border-white/10 shadow-[0_30px_80px_rgba(0,0,0,0.8)] flex flex-col md:flex-row"
+            className="modal-panel relative z-10 w-full max-w-3xl rounded-2xl border border-white/10 shadow-[0_30px_80px_rgba(0,0,0,0.8)] flex flex-col md:flex-row overflow-y-auto md:overflow-hidden"
             style={{
-              maxHeight: "90vh",
+              maxHeight: "92vh",
               background: modal.style === "gradient"
                 ? "linear-gradient(135deg, #0d2260 0%, #1a3fa8 40%, #2563EB 70%, #1e50c8 100%)"
                 : modal.style === "white"
@@ -207,19 +268,52 @@ export default function HighlightsRow() {
             }}
             onClick={(e) => e.stopPropagation()}
           >
-            {/* imagen */}
-            <div className="modal-img relative w-full md:w-[55%] aspect-square md:aspect-auto md:min-h-[400px] shrink-0">
-              <Image src={modal.src} alt={modal.title} fill className="object-cover" sizes="600px" priority />
+            {/* imagen slider */}
+            <div className="modal-img relative w-full shrink-0 md:w-[55%] md:shrink-0"
+              style={{ height: "clamp(220px, 48vw, 420px)" }}>
+              <Image
+                key={modalImg}
+                src={modal.images[modalImg]}
+                alt={modal.title}
+                fill
+                className="object-cover transition-opacity duration-300"
+                sizes="600px"
+                priority
+              />
               {modal.style === "gradient" && (
                 <div className="absolute inset-0 pointer-events-none mix-blend-overlay opacity-40"
                   style={{ background: "linear-gradient(135deg, #2563EB 0%, transparent 70%)" }} />
               )}
               <div className="absolute inset-0 pointer-events-none"
-                style={{ background: "linear-gradient(to right, transparent 60%, " + (modal.style === "white" ? "#f5f5f5" : modal.style === "gradient" ? "#1a3fa8" : "#0e0e0e") + " 100%)" }} />
+                style={{ background: "linear-gradient(to bottom, transparent 55%, " + (modal.style === "white" ? "#f5f5f5" : modal.style === "gradient" ? "#1a3fa8" : "#0e0e0e") + " 100%)" }} />
+
+              {/* controles slider — solo si hay varias */}
+              {modal.images.length > 1 && (
+                <>
+                  <button
+                    onClick={(e) => { e.stopPropagation(); setModalImg((i) => (i - 1 + modal.images.length) % modal.images.length); }}
+                    className="absolute left-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full flex items-center justify-center transition hover:scale-110"
+                    style={{ background: "rgba(0,0,0,0.55)", border: "1px solid rgba(255,255,255,0.2)" }}>
+                    <span className="text-white text-lg leading-none">‹</span>
+                  </button>
+                  <button
+                    onClick={(e) => { e.stopPropagation(); setModalImg((i) => (i + 1) % modal.images.length); }}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full flex items-center justify-center transition hover:scale-110"
+                    style={{ background: "rgba(0,0,0,0.55)", border: "1px solid rgba(255,255,255,0.2)" }}>
+                    <span className="text-white text-lg leading-none">›</span>
+                  </button>
+                  <div className="absolute bottom-3 left-0 right-0 flex justify-center gap-1.5">
+                    {modal.images.map((_, i) => (
+                      <button key={i} onClick={(e) => { e.stopPropagation(); setModalImg(i); }}
+                        className={`rounded-full transition-all ${i === modalImg ? "w-4 h-1.5 bg-white" : "w-1.5 h-1.5 bg-white/40"}`} />
+                    ))}
+                  </div>
+                </>
+              )}
             </div>
 
-            {/* info */}
-            <div className="flex flex-col justify-between p-8 md:p-10 flex-1">
+            {/* info — sin altura límite, crece con el contenido */}
+            <div className="flex flex-col justify-between p-7 md:p-10 flex-1 overflow-y-auto md:overflow-visible">
               {/* bokeh en modal gradient */}
               {modal.style === "gradient" && (
                 <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-2xl">
