@@ -2,13 +2,17 @@
 import { useEffect, useRef, useState } from "react";
 import { X, ZoomIn } from "lucide-react";
 
+const FAMOSOS = [
+  "/fam-1.jpg", "/fam-2.jpg", "/fam-3.jpg",
+  "/fam-4.jpg", "/fam-5.jpg", "/fam-6.jpg",
+];
+
 const PHOTOS = [
   "/mom-1.jpg", "/mom-2.jpg", "/mom-3.jpg", "/mom-4.jpg", "/mom-5.jpg",
   "/mom-6.jpg", "/mom-7.jpg", "/mom-8.jpg", "/mom-9.jpg", "/mom-10.jpg",
   "/mom-11.jpg", "/mom-12.jpg", "/mom-13.jpg",
 ];
 
-// duplicamos para loop infinito
 const ROW1 = [...PHOTOS.slice(0, 7), ...PHOTOS.slice(0, 7)];
 const ROW2 = [...PHOTOS.slice(6), ...PHOTOS.slice(6)];
 
@@ -89,6 +93,53 @@ export default function MomentosSection() {
                 <span className="text-[10px] font-bold uppercase tracking-[0.25em]" style={{ color: "#F97316" }}>2025 — 2026</span>
               </div>
             </div>
+          </div>
+        </div>
+
+        {/* ── GRID FAMOSOS ── */}
+        <div className={`relative z-10 mx-auto max-w-[1250px] px-6 md:px-12 pb-12 transition-all duration-700 delay-150 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
+
+          {/* label */}
+          <div className="flex items-center gap-4 mb-6">
+            <div className="h-[1px] flex-1 bg-white/8" />
+            <span className="text-[10px] font-bold uppercase tracking-[0.3em]" style={{ color: "#F97316" }}>
+              Artistas · Referentes · Colabs
+            </span>
+            <div className="h-[1px] flex-1 bg-white/8" />
+          </div>
+
+          {/* grid 3 cols desktop, 2 mobile — cards verticales portrait */}
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
+            {FAMOSOS.map((src, i) => (
+              <div
+                key={i}
+                onClick={() => setLightbox(src)}
+                className="relative rounded-2xl overflow-hidden cursor-pointer group"
+                style={{ aspectRatio: "3/4" }}
+              >
+                <img src={src} alt="Collab" className="absolute inset-0 w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent pointer-events-none" />
+                <div className="absolute inset-0 rounded-2xl ring-0 group-hover:ring-2 ring-[#F97316]/50 transition-all duration-300 pointer-events-none" />
+                <div className="absolute top-3 left-3">
+                  <span className={`text-[9px] font-bold uppercase tracking-widest px-2 py-1 rounded-full transition-opacity duration-300 ${i === 0 ? "opacity-100" : "opacity-0 group-hover:opacity-100"}`}
+                    style={{ background: "rgba(234,88,12,0.85)", color: "#fff" }}>
+                    ★ Collab
+                  </span>
+                </div>
+                <div className="absolute bottom-3 left-3">
+                  <span className="text-white/40 text-[9px] font-bold uppercase tracking-widest">Flash Design</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* separador */}
+        <div className="relative z-10 mx-auto max-w-[1250px] px-6 md:px-12 mb-8">
+          <div className="flex items-center gap-4">
+            <div className="h-[1px] flex-1 bg-white/8" />
+            <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-white/20">Más momentos</span>
+            <div className="h-[1px] flex-1 bg-white/8" />
           </div>
         </div>
 

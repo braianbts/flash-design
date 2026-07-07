@@ -11,11 +11,42 @@ type Service = {
 };
 
 const SERVICES: Service[] = [
-  { id: "s1", label: "Servicio 1", description: "Descripción próximamente.", images: ["/srv-1.jpg", "/srv-1a.jpg"] },
-  { id: "s2", label: "Servicio 2", description: "Descripción próximamente.", images: ["/srv-2.jpg", "/srv-2a.jpg", "/srv-2b.jpg"] },
-  { id: "s3", label: "Servicio 3", description: "Descripción próximamente.", images: ["/srv-3.jpg", "/srv-3a.jpg", "/srv-3b.jpg"] },
-  { id: "s4", label: "Servicio 4", description: "Descripción próximamente.", images: ["/srv-4.jpg"] },
-  { id: "s5", label: "Servicio 5", description: "Descripción próximamente.", images: ["/srv-5.jpg"] },
+  {
+    id: "s1",
+    label: "Cambio de materiales",
+    description: "Intercambiamos los materiales de la capellada por otros con distinta textura, color o diseño. El par mantiene sus parámetros originales sumando un estilo único. Cambiamos partes como el Swoosh, el Toe box y más — incluyendo custom canvas LV.",
+    images: ["/srv-1.jpg", "/srv-1a.jpg", "/srv-4.jpg"],
+  },
+  {
+    id: "s2",
+    label: "Custom Just Married",
+    description: "Una noche especial necesita un par único y diseñado para ese evento mágico. Creamos un custom exclusivo para el día más importante, pensado para que el par sea parte del recuerdo para siempre.",
+    images: ["/srv-2.jpg", "/srv-2a.jpg", "/srv-2b.jpg"],
+  },
+  {
+    id: "s3",
+    label: "Re-work",
+    description: "Transformamos un calzado urbano en un diseño más formal manteniendo la estética original. Reemplazamos suelas, agregamos material de cuero y creamos una customización única que eleva el par a otro nivel.",
+    images: ["/srv-3.jpg", "/srv-3a.jpg", "/srv-3b.jpg"],
+  },
+  {
+    id: "s4",
+    label: "Blackout",
+    description: "Dicen que los magos en el fútbol usan botines full negros — y nosotros podemos lograrlo. Customización íntegramente negra con pintura permanente y resistente al uso en cancha.",
+    images: ["/srv-5.jpg"],
+  },
+  {
+    id: "s5",
+    label: "Custom Paint",
+    description: "La customización más conocida y sin duda la que sabemos hacer a la perfección. Agregamos cualquier diseño en pintura sobre la capellada y en algunos casos sobre la suela. Arte directo sobre tu par.",
+    images: [],
+  },
+  {
+    id: "s6",
+    label: "Sole Swap",
+    description: "Muy conocido en el mundo coleccionista. Algunos pares exclusivos cumplen su ciclo de vida y necesitan suelas nuevas — ahí entramos nosotros para que esa pieza única vuelva a la vida. También creamos híbridos entre distintos modelos.",
+    images: [],
+  },
 ];
 
 export default function CategoriesSection() {
@@ -48,15 +79,21 @@ export default function CategoriesSection() {
         </div>
 
         {/* imagen mobile — full width, tall */}
-        <div className="relative w-full aspect-[4/3] overflow-hidden">
-          <Image
-            key={`m-${active.id}-${imgIndex}`}
-            src={active.images[imgIndex]}
-            alt={active.label}
-            fill
-            className="object-cover"
-            priority
-          />
+        <div className="relative w-full aspect-[4/3] overflow-hidden bg-[#111]">
+          {active.images.length > 0 ? (
+            <Image
+              key={`m-${active.id}-${imgIndex}`}
+              src={active.images[imgIndex]}
+              alt={active.label}
+              fill
+              className="object-cover"
+              priority
+            />
+          ) : (
+            <div className="absolute inset-0 flex items-center justify-center">
+              <span className="text-white/15 text-xs uppercase tracking-widest">Fotos próximamente</span>
+            </div>
+          )}
           {/* overlay gradient bottom */}
           <div className="absolute inset-0 pointer-events-none bg-gradient-to-t from-[#080808] via-transparent to-transparent" />
 
@@ -205,17 +242,24 @@ export default function CategoriesSection() {
         </div>
 
         {/* col derecha — imagen full height */}
-        <div className="relative overflow-hidden">
+        <div className="relative overflow-hidden bg-[#111]">
           {/* imagen */}
-          <Image
-            key={`d-${active.id}-${imgIndex}`}
-            src={active.images[imgIndex]}
-            alt={active.label}
-            fill
-            className="object-cover transition-opacity duration-500"
-            priority
-            sizes="50vw"
-          />
+          {active.images.length > 0 ? (
+            <Image
+              key={`d-${active.id}-${imgIndex}`}
+              src={active.images[imgIndex]}
+              alt={active.label}
+              fill
+              className="object-cover transition-opacity duration-500"
+              priority
+              sizes="50vw"
+            />
+          ) : (
+            <div className="absolute inset-0 flex flex-col items-center justify-center gap-3">
+              <span className="text-white/10 text-6xl font-extrabold uppercase">{num}</span>
+              <span className="text-white/20 text-xs uppercase tracking-widest">Fotos próximamente</span>
+            </div>
+          )}
 
           {/* overlay gradientes */}
           <div className="absolute inset-0 pointer-events-none bg-gradient-to-r from-[#080808] via-transparent to-transparent" style={{ width: "30%" }} />
