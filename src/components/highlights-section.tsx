@@ -269,8 +269,8 @@ export default function HighlightsRow() {
             onClick={(e) => e.stopPropagation()}
           >
             {/* imagen slider */}
-            <div className="modal-img relative w-full shrink-0 md:w-[55%] overflow-hidden"
-              style={{ height: "clamp(240px, 50vw, 440px)" }}>
+            <div className="modal-img relative w-full shrink-0 md:w-[55%] overflow-hidden self-stretch"
+              style={{ minHeight: "clamp(240px, 50vw, 380px)" }}>
               <Image
                 key={modalImg}
                 src={modal.images[modalImg]}
