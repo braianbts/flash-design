@@ -39,7 +39,7 @@ const SERVICES: Service[] = [
     id: "s5",
     label: "Custom Paint",
     description: "La customización más conocida y sin duda la que sabemos hacer a la perfección. Agregamos cualquier diseño en pintura sobre la capellada y en algunos casos sobre la suela. Arte directo sobre tu par.",
-    images: [],
+    images: ["/custompaint-1.jpg", "/custompaint-2.jpg", "/custompaint-3.jpg"],
   },
   {
     id: "s6",
