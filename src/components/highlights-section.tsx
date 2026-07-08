@@ -269,51 +269,49 @@ export default function HighlightsRow() {
             onClick={(e) => e.stopPropagation()}
           >
             {/* imagen slider */}
-            <div className="modal-img w-full shrink-0 md:w-[55%] md:shrink-0 flex flex-col"
-              style={{ background: "#000" }}>
-              {/* imagen — sin degradé, ocupa todo el alto disponible */}
-              <div className="relative flex-1" style={{ minHeight: "clamp(200px, 46vw, 400px)" }}>
-                <Image
-                  key={modalImg}
-                  src={modal.images[modalImg]}
-                  alt={modal.title}
-                  fill
-                  className="object-contain transition-opacity duration-300"
-                  sizes="600px"
-                  priority
-                />
-                {modal.style === "gradient" && (
-                  <div className="absolute inset-0 pointer-events-none mix-blend-overlay opacity-20"
-                    style={{ background: "linear-gradient(135deg, #2563EB 0%, transparent 70%)" }} />
-                )}
-                {/* flechas laterales */}
-                {modal.images.length > 1 && (
-                  <>
-                    <button
-                      onClick={(e) => { e.stopPropagation(); setModalImg((i) => (i - 1 + modal.images.length) % modal.images.length); }}
-                      className="absolute left-2 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full flex items-center justify-center transition hover:scale-110"
-                      style={{ background: "rgba(0,0,0,0.6)", border: "1px solid rgba(255,255,255,0.2)" }}>
-                      <span className="text-white text-lg leading-none">‹</span>
-                    </button>
-                    <button
-                      onClick={(e) => { e.stopPropagation(); setModalImg((i) => (i + 1) % modal.images.length); }}
-                      className="absolute right-2 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full flex items-center justify-center transition hover:scale-110"
-                      style={{ background: "rgba(0,0,0,0.6)", border: "1px solid rgba(255,255,255,0.2)" }}>
-                      <span className="text-white text-lg leading-none">›</span>
-                    </button>
-                  </>
-                )}
-              </div>
-              {/* dots fuera de la imagen — fila propia */}
+            <div className="modal-img relative w-full shrink-0 md:w-[55%] overflow-hidden"
+              style={{ height: "clamp(240px, 50vw, 440px)" }}>
+              <Image
+                key={modalImg}
+                src={modal.images[modalImg]}
+                alt={modal.title}
+                fill
+                className="object-cover transition-opacity duration-300"
+                sizes="600px"
+                priority
+              />
+
+              {/* flechas — solo zona táctil, sin fondo salvo hover */}
               {modal.images.length > 1 && (
-                <div className="flex justify-center items-center gap-1.5 py-2.5 shrink-0"
-                  style={{ background: "rgba(0,0,0,0.7)" }}
-                  onClick={(e) => e.stopPropagation()}>
-                  {modal.images.map((_, i) => (
-                    <button key={i} onClick={() => setModalImg(i)}
-                      className={`rounded-full transition-all ${i === modalImg ? "w-4 h-1.5 bg-white" : "w-1.5 h-1.5 bg-white/30"}`} />
-                  ))}
-                </div>
+                <>
+                  <button
+                    onClick={(e) => { e.stopPropagation(); setModalImg((i) => (i - 1 + modal.images.length) % modal.images.length); }}
+                    className="absolute left-0 top-0 bottom-0 w-14 flex items-center justify-start pl-3 group/btn"
+                    aria-label="anterior">
+                    <span className="w-8 h-8 rounded-full flex items-center justify-center opacity-0 group-hover/btn:opacity-100 transition-opacity"
+                      style={{ background: "rgba(0,0,0,0.5)", backdropFilter: "blur(6px)" }}>
+                      <span className="text-white text-base leading-none">‹</span>
+                    </span>
+                  </button>
+                  <button
+                    onClick={(e) => { e.stopPropagation(); setModalImg((i) => (i + 1) % modal.images.length); }}
+                    className="absolute right-0 top-0 bottom-0 w-14 flex items-center justify-end pr-3 group/btn"
+                    aria-label="siguiente">
+                    <span className="w-8 h-8 rounded-full flex items-center justify-center opacity-0 group-hover/btn:opacity-100 transition-opacity"
+                      style={{ background: "rgba(0,0,0,0.5)", backdropFilter: "blur(6px)" }}>
+                      <span className="text-white text-base leading-none">›</span>
+                    </span>
+                  </button>
+
+                  {/* dots — barra mínima sobre el borde inferior de la imagen */}
+                  <div className="absolute bottom-0 inset-x-0 flex justify-center items-center gap-1.5 pb-3 pt-8 pointer-events-none"
+                    style={{ background: "linear-gradient(to top, rgba(0,0,0,0.45) 0%, transparent 100%)" }}>
+                    {modal.images.map((_, i) => (
+                      <button key={i} onClick={(e) => { e.stopPropagation(); setModalImg(i); }}
+                        className={`rounded-full transition-all pointer-events-auto ${i === modalImg ? "w-5 h-[3px] bg-white" : "w-[3px] h-[3px] bg-white/50"}`} />
+                    ))}
+                  </div>
+                </>
               )}
             </div>
 
