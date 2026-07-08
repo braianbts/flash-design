@@ -45,7 +45,7 @@ const SERVICES: Service[] = [
     id: "s6",
     label: "Sole Swap",
     description: "Muy conocido en el mundo coleccionista. Algunos pares exclusivos cumplen su ciclo de vida y necesitan suelas nuevas — ahí entramos nosotros para que esa pieza única vuelva a la vida. También creamos híbridos entre distintos modelos.",
-    images: [],
+    images: ["/soleswap-1.jpg", "/soleswap-2.jpg", "/soleswap-3.jpg"],
   },
 ];
 
