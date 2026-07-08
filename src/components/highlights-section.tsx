@@ -9,8 +9,8 @@ const ITEMS = [
     cat: "Fileteado Porteño × Nike",
     title: "Alfredo Genovese",
     desc: "En 2024 me junté junto al maestro del fileteado, Alfredo Genovese, y creamos un diseño inspirado en su participación con Nike en 2006 sobre unas Dunk Low. Una de las experiencias más gratificantes de mi carrera ya que junta mi pasión por el calzado y mis raíces argentinas.",
-    src: "/dest-1.jpg",
-    images: ["/dest-1.jpg"],
+    src: "/p1-1.jpg",
+    images: ["/p1-1.jpg", "/p1-2.jpg", "/p1-3.jpg", "/p1-4.jpg"],
     style: "white",
   },
   {
@@ -27,8 +27,8 @@ const ITEMS = [
     cat: "Adidas × Home of Classic",
     title: "Duki · Emilia · Bizarrap · Paulo Londra",
     desc: 'En 2023 me contactó Adidas para realizar 4 customizaciones para sus artistas principales: Duki, Emilia, Bizarrap y Paulo Londra. Los 4 diseños fueron pensados y ejecutados por mí en el marco de la campaña “Home of Classic”.',
-    src: "/dest-4.jpg",
-    images: ["/dest-4.jpg"],
+    src: "/adidas-1.jpg",
+    images: ["/adidas-1.jpg", "/adidas-2.jpg", "/adidas-3.jpg", "/adidas-4.jpg", "/adidas-5.jpg", "/adidas-6.jpg", "/adidas-7.jpg"],
     style: "dark",
   },
 ];
@@ -269,46 +269,51 @@ export default function HighlightsRow() {
             onClick={(e) => e.stopPropagation()}
           >
             {/* imagen slider */}
-            <div className="modal-img relative w-full shrink-0 md:w-[55%] md:shrink-0"
-              style={{ height: "clamp(220px, 48vw, 420px)" }}>
-              <Image
-                key={modalImg}
-                src={modal.images[modalImg]}
-                alt={modal.title}
-                fill
-                className="object-cover transition-opacity duration-300"
-                sizes="600px"
-                priority
-              />
-              {modal.style === "gradient" && (
-                <div className="absolute inset-0 pointer-events-none mix-blend-overlay opacity-40"
-                  style={{ background: "linear-gradient(135deg, #2563EB 0%, transparent 70%)" }} />
-              )}
-              <div className="absolute inset-0 pointer-events-none"
-                style={{ background: "linear-gradient(to bottom, transparent 55%, " + (modal.style === "white" ? "#f5f5f5" : modal.style === "gradient" ? "#1a3fa8" : "#0e0e0e") + " 100%)" }} />
-
-              {/* controles slider — solo si hay varias */}
+            <div className="modal-img w-full shrink-0 md:w-[55%] md:shrink-0 flex flex-col"
+              style={{ background: "#000" }}>
+              {/* imagen — sin degradé, ocupa todo el alto disponible */}
+              <div className="relative flex-1" style={{ minHeight: "clamp(200px, 46vw, 400px)" }}>
+                <Image
+                  key={modalImg}
+                  src={modal.images[modalImg]}
+                  alt={modal.title}
+                  fill
+                  className="object-contain transition-opacity duration-300"
+                  sizes="600px"
+                  priority
+                />
+                {modal.style === "gradient" && (
+                  <div className="absolute inset-0 pointer-events-none mix-blend-overlay opacity-20"
+                    style={{ background: "linear-gradient(135deg, #2563EB 0%, transparent 70%)" }} />
+                )}
+                {/* flechas laterales */}
+                {modal.images.length > 1 && (
+                  <>
+                    <button
+                      onClick={(e) => { e.stopPropagation(); setModalImg((i) => (i - 1 + modal.images.length) % modal.images.length); }}
+                      className="absolute left-2 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full flex items-center justify-center transition hover:scale-110"
+                      style={{ background: "rgba(0,0,0,0.6)", border: "1px solid rgba(255,255,255,0.2)" }}>
+                      <span className="text-white text-lg leading-none">‹</span>
+                    </button>
+                    <button
+                      onClick={(e) => { e.stopPropagation(); setModalImg((i) => (i + 1) % modal.images.length); }}
+                      className="absolute right-2 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full flex items-center justify-center transition hover:scale-110"
+                      style={{ background: "rgba(0,0,0,0.6)", border: "1px solid rgba(255,255,255,0.2)" }}>
+                      <span className="text-white text-lg leading-none">›</span>
+                    </button>
+                  </>
+                )}
+              </div>
+              {/* dots fuera de la imagen — fila propia */}
               {modal.images.length > 1 && (
-                <>
-                  <button
-                    onClick={(e) => { e.stopPropagation(); setModalImg((i) => (i - 1 + modal.images.length) % modal.images.length); }}
-                    className="absolute left-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full flex items-center justify-center transition hover:scale-110"
-                    style={{ background: "rgba(0,0,0,0.55)", border: "1px solid rgba(255,255,255,0.2)" }}>
-                    <span className="text-white text-lg leading-none">‹</span>
-                  </button>
-                  <button
-                    onClick={(e) => { e.stopPropagation(); setModalImg((i) => (i + 1) % modal.images.length); }}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full flex items-center justify-center transition hover:scale-110"
-                    style={{ background: "rgba(0,0,0,0.55)", border: "1px solid rgba(255,255,255,0.2)" }}>
-                    <span className="text-white text-lg leading-none">›</span>
-                  </button>
-                  <div className="absolute bottom-3 left-0 right-0 flex justify-center gap-1.5">
-                    {modal.images.map((_, i) => (
-                      <button key={i} onClick={(e) => { e.stopPropagation(); setModalImg(i); }}
-                        className={`rounded-full transition-all ${i === modalImg ? "w-4 h-1.5 bg-white" : "w-1.5 h-1.5 bg-white/40"}`} />
-                    ))}
-                  </div>
-                </>
+                <div className="flex justify-center items-center gap-1.5 py-2.5 shrink-0"
+                  style={{ background: "rgba(0,0,0,0.7)" }}
+                  onClick={(e) => e.stopPropagation()}>
+                  {modal.images.map((_, i) => (
+                    <button key={i} onClick={() => setModalImg(i)}
+                      className={`rounded-full transition-all ${i === modalImg ? "w-4 h-1.5 bg-white" : "w-1.5 h-1.5 bg-white/30"}`} />
+                  ))}
+                </div>
               )}
             </div>
 
