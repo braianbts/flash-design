@@ -27,8 +27,8 @@ const ITEMS = [
     cat: "Adidas × Home of Classic",
     title: "Duki · Emilia · Bizarrap · Paulo Londra",
     desc: 'En 2023 me contactó Adidas para realizar 4 customizaciones para sus artistas principales: Duki, Emilia, Bizarrap y Paulo Londra. Los 4 diseños fueron pensados y ejecutados por mí en el marco de la campaña “Home of Classic”.',
-    src: "/adidas-1.jpg",
-    images: ["/adidas-1.jpg", "/adidas-2.jpg", "/adidas-3.jpg", "/adidas-4.jpg", "/adidas-5.jpg", "/adidas-6.jpg", "/adidas-7.jpg"],
+    src: "/adidas-2.jpg",
+    images: ["/adidas-2.jpg", "/adidas-1.jpg", "/adidas-3.jpg", "/adidas-4.jpg", "/adidas-5.jpg", "/adidas-6.jpg", "/adidas-7.jpg"],
     style: "dark",
   },
 ];
