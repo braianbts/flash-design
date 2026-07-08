@@ -9,7 +9,6 @@ const links = [
   { href: "/", label: "Inicio" },
   { href: "/#new-arrivals", label: "Productos" },
   { href: "/#destacados", label: "Destacados" },
-  { href: "/#nosotros", label: "Nosotros" },
 ];
 
 export default function Navbar() {
