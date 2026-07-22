@@ -28,12 +28,8 @@ export default function HeroFlash() {
       currentRef.current.x += (targetRef.current.x - currentRef.current.x) * lerp;
       currentRef.current.y += (targetRef.current.y - currentRef.current.y) * lerp;
       if (sneakerRef.current) {
-        const tx = currentRef.current.x * 12;
-        const ty = currentRef.current.y * 7;
-        const rx = -currentRef.current.y * 2.5;
-        const ry = currentRef.current.x * 3;
         sneakerRef.current.style.transform =
-          `translate(${tx}px, ${ty}px) rotateX(${rx}deg) rotateY(${ry}deg)`;
+          `translate(${currentRef.current.x * 14}px, ${currentRef.current.y * 8}px) rotateX(${-currentRef.current.y * 2.5}deg) rotateY(${currentRef.current.x * 3}deg)`;
       }
       rafRef.current = requestAnimationFrame(animate);
     };
@@ -49,10 +45,10 @@ export default function HeroFlash() {
     };
   }, []);
 
-  const show = (delay: number) => ({
+  const fade = (delay: number, y = 20) => ({
     opacity: mounted ? 1 : 0,
-    transform: mounted ? "translateY(0)" : "translateY(18px)",
-    transition: `all 0.8s cubic-bezier(0.16,1,0.3,1) ${delay}s`,
+    transform: mounted ? "translateY(0)" : `translateY(${y}px)`,
+    transition: `opacity 0.9s cubic-bezier(0.16,1,0.3,1) ${delay}s, transform 0.9s cubic-bezier(0.16,1,0.3,1) ${delay}s`,
   });
 
   return (
@@ -61,131 +57,124 @@ export default function HeroFlash() {
         Saltar al contenido
       </a>
 
-      <div
-        className="relative w-full min-h-[100svh] flex flex-col"
-        style={{ perspective: "1200px" }}
-      >
+      <div className="relative w-full min-h-[100svh] flex flex-col" style={{ perspective: "1200px" }}>
+
         {/* FONDO */}
-        <Image
-          src="/IMG1.JPG"
-          alt=""
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover object-[50%_20%]"
+        <Image src="/IMG1.JPG" alt="" fill priority sizes="100vw"
+          className="object-cover object-[60%_20%]"
           style={{ willChange: "transform" }}
         />
 
         {/* ZAPATILLA parallax */}
-        <div
-          ref={sneakerRef}
-          className="absolute inset-0 z-10 pointer-events-none"
-          style={{ willChange: "transform", transformStyle: "preserve-3d", transition: "none" }}
-        >
-          <Image
-            src="/IMG1-FONDO.png"
-            alt="Flash Design sneaker"
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover object-[50%_20%]"
-            style={{ filter: "drop-shadow(0 40px 80px rgba(0,0,0,0.7))" }}
+        <div ref={sneakerRef} className="absolute inset-0 z-10 pointer-events-none"
+          style={{ willChange: "transform", transformStyle: "preserve-3d" }}>
+          <Image src="/IMG1-FONDO.png" alt="Flash Design sneaker" fill priority sizes="100vw"
+            className="object-cover object-[60%_20%]"
+            style={{ filter: "drop-shadow(0 40px 100px rgba(0,0,0,0.8))" }}
           />
         </div>
 
-        {/* Overlay oscuro izquierdo */}
-        <div
-          className="pointer-events-none absolute inset-0 z-10"
-          style={{ background: "linear-gradient(105deg, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.55) 42%, rgba(0,0,0,0.12) 70%, transparent 100%)" }}
+        {/* Gradientes de composición */}
+        {/* izquierdo fuerte */}
+        <div className="pointer-events-none absolute inset-0 z-10"
+          style={{ background: "linear-gradient(100deg, rgba(4,4,4,0.96) 0%, rgba(4,4,4,0.75) 38%, rgba(4,4,4,0.25) 62%, transparent 80%)" }}
         />
-        {/* Overlay top */}
-        <div className="pointer-events-none absolute inset-x-0 top-0 z-10 h-32 bg-gradient-to-b from-black/70 to-transparent" />
-        {/* Overlay bottom */}
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-48 bg-gradient-to-t from-black/80 to-transparent" />
+        {/* top */}
+        <div className="pointer-events-none absolute inset-x-0 top-0 z-10 h-40 bg-gradient-to-b from-black/80 to-transparent" />
+        {/* bottom */}
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-52 bg-gradient-to-t from-black/90 to-transparent" />
 
-        {/* CONTENIDO */}
-        <div className="relative z-20 flex flex-col justify-between flex-1 px-6 md:px-14 xl:px-20 pt-[calc(72px+env(safe-area-inset-top,0px))] pb-10 md:pb-14">
+        {/* Línea vertical decorativa — solo desktop */}
+        <div className="hidden md:block pointer-events-none absolute left-[58%] top-0 bottom-0 z-10 w-px"
+          style={{ background: "linear-gradient(180deg, transparent 0%, rgba(255,255,255,0.06) 30%, rgba(255,255,255,0.06) 70%, transparent 100%)" }}
+        />
 
-          {/* TOP ROW */}
-          <div className="flex items-center justify-between" style={show(0.05)}>
-            <span className="text-[9px] md:text-[10px] font-bold uppercase tracking-[0.35em] text-white/35">
+        {/* LAYOUT */}
+        <div className="relative z-20 flex flex-col flex-1 px-7 md:px-14 xl:px-20
+          pt-[calc(68px+env(safe-area-inset-top,0px))] pb-10 md:pb-12">
+
+          {/* TOP BAR */}
+          <div className="flex items-center justify-between" style={fade(0.05, 10)}>
+            <span className="text-[9px] font-bold uppercase tracking-[0.38em] text-white/30">
               Flash Design — Buenos Aires
             </span>
-            <span className="text-[9px] md:text-[10px] font-bold uppercase tracking-[0.3em] text-white/25">
-              Est. 2020
-            </span>
+            <div className="hidden md:flex items-center gap-6">
+              <span className="text-[9px] font-bold uppercase tracking-[0.3em] text-white/15">Sneaker Customization</span>
+              <span className="text-[9px] font-bold uppercase tracking-[0.3em] text-white/15">Est. 2020</span>
+            </div>
           </div>
 
-          {/* CENTRO — tipografía monumental */}
-          <div className="flex-1 flex flex-col justify-center mt-8 md:mt-0">
+          {/* TIPOGRAFÍA MONUMENTAL */}
+          <div className="flex-1 flex flex-col justify-end md:justify-center mt-6 md:mt-0">
 
-            {/* Palabra dispersa — solo desktop */}
-            <div
-              className="hidden md:flex items-center gap-10 mb-4 ml-1"
-              style={show(0.15)}
-            >
-              <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-white/18">Diseño</span>
-              <span className="w-8 h-px bg-white/10" />
-              <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-white/18">Único</span>
-              <span className="w-8 h-px bg-white/10" />
-              <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-white/18">Premium</span>
+            {/* Etiqueta superior */}
+            <div className="flex items-center gap-3 mb-5 md:mb-6" style={fade(0.12, 14)}>
+              <span className="w-6 h-px bg-[#2563EB]" />
+              <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-[#2563EB]">
+                Diseño · Materiales · Arte
+              </span>
             </div>
 
-            {/* Headline monumental */}
-            <div className="overflow-hidden" style={show(0.2)}>
-              <h1
-                className="font-black uppercase leading-[0.82] tracking-[-0.02em] text-white"
-                style={{ fontSize: "clamp(3.2rem, 10.5vw, 10.5rem)" }}
-              >
-                <span className="block">Personalización</span>
+            {/* Headline */}
+            <div style={fade(0.2, 24)}>
+              <h1 className="font-black uppercase leading-[0.85] tracking-[-0.025em]">
+                {/* Línea 1 — tamaño mediano, visible completa */}
+                <span
+                  className="block text-white/90"
+                  style={{ fontSize: "clamp(2.4rem, 6.2vw, 6rem)" }}
+                >
+                  Personalización
+                </span>
+
+                {/* Línea 2 — azul, un poco más grande */}
                 <span
                   className="block"
                   style={{
-                    background: "linear-gradient(90deg, #60a5fa 0%, #2563EB 60%, #1d4ed8 100%)",
+                    fontSize: "clamp(2.8rem, 7.5vw, 7.2rem)",
+                    background: "linear-gradient(90deg, #60a5fa 0%, #2563EB 60%)",
                     WebkitBackgroundClip: "text",
                     WebkitTextFillColor: "transparent",
                     backgroundClip: "text",
                   }}
                 >
-                  & Custom
+                  &amp; Custom
                 </span>
+
+                {/* Línea 3 — la más grande, palabra corta que cabe perfecto */}
                 <span
                   className="block text-white"
-                  style={{ fontSize: "clamp(4rem, 14vw, 14rem)", letterSpacing: "-0.04em", lineHeight: 0.8 }}
+                  style={{ fontSize: "clamp(4.5rem, 14vw, 13.5rem)", lineHeight: 0.82, letterSpacing: "-0.04em" }}
                 >
                   Sneakers.
                 </span>
               </h1>
             </div>
+
+            {/* Separador + stats — solo desktop */}
+            <div className="hidden md:flex items-center gap-10 mt-8" style={fade(0.45, 14)}>
+              <div className="h-px flex-1 max-w-[60px]" style={{ background: "rgba(255,255,255,0.1)" }} />
+              <span className="text-white/20 text-[10px] font-bold uppercase tracking-[0.35em]">Buenos Aires</span>
+              <span className="text-white/10 text-[10px]">·</span>
+              <span className="text-white/20 text-[10px] font-bold uppercase tracking-[0.35em]">Argentina</span>
+              <span className="text-white/10 text-[10px]">·</span>
+              <span className="text-white/20 text-[10px] font-bold uppercase tracking-[0.35em]">100% Handmade</span>
+            </div>
           </div>
 
           {/* BOTTOM ROW */}
-          <div className="flex items-end justify-between gap-6 mt-10 md:mt-8">
-
-            {/* Descripción */}
-            <p
-              className="text-white/35 text-[11px] md:text-xs leading-relaxed max-w-[22ch] font-medium uppercase tracking-wide"
-              style={show(0.5)}
-            >
-              Cada par,<br />una pieza única.
+          <div className="flex items-end justify-between gap-4 mt-8 md:mt-10">
+            <p className="text-white/25 text-[10px] md:text-[11px] font-semibold uppercase tracking-[0.25em] leading-relaxed" style={fade(0.55, 10)}>
+              Cada par,<br className="hidden md:block" /> una pieza única.
             </p>
 
-            {/* CTAs */}
-            <div className="flex items-center gap-5 md:gap-8" style={show(0.6)}>
-              <a
-                href="#destacados"
-                className="group flex items-center gap-3 text-white text-[11px] md:text-xs font-black uppercase tracking-[0.25em] transition-all duration-300 hover:text-[#60a5fa]"
-              >
-                <span
-                  className="w-8 h-px transition-all duration-300 group-hover:w-12"
-                  style={{ background: "linear-gradient(90deg, #2563EB, #60a5fa)" }}
-                />
+            <div className="flex items-center gap-6 md:gap-10" style={fade(0.65, 10)}>
+              <a href="#destacados"
+                className="group flex items-center gap-3 text-white text-[10px] md:text-[11px] font-black uppercase tracking-[0.3em] hover:text-[#60a5fa] transition-colors duration-300">
+                <span className="w-6 md:w-8 h-px bg-[#2563EB] transition-all duration-300 group-hover:w-12" />
                 Ver trabajos
               </a>
-              <a
-                href="#categories"
-                className="text-white/25 text-[11px] md:text-xs font-bold uppercase tracking-[0.25em] hover:text-white/60 transition-colors duration-300"
-              >
+              <a href="#categories"
+                className="text-white/20 text-[10px] md:text-[11px] font-bold uppercase tracking-[0.3em] hover:text-white/50 transition-colors duration-300">
                 Servicios ↓
               </a>
             </div>
