@@ -272,12 +272,10 @@ export default function CategoriesSection() {
           </div>
 
           {/* label activo — esquina inferior izquierda */}
-          <div className="absolute bottom-10 left-10 right-10">
-            <span className="block text-white/40 text-[10px] font-bold uppercase tracking-[0.3em] mb-1">
-              {active.label}
-            </span>
-            <span className="block text-white text-2xl xl:text-3xl font-extrabold uppercase tracking-tight leading-tight">
-              {active.description}
+          <div className="absolute bottom-10 left-10">
+            <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-black/40 backdrop-blur-md border border-white/10">
+              <span className="text-[#2563EB] text-[10px] font-bold tabular-nums">{num}</span>
+              <span className="text-white/70 text-[10px] font-bold uppercase tracking-[0.2em]">{active.label}</span>
             </span>
           </div>
 
