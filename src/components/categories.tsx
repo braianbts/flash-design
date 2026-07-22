@@ -27,7 +27,7 @@ const SERVICES: Service[] = [
   {
     id: "s3",
     label: "Re-work",
-    objectPosition: "center 30%",
+    objectPosition: "center 70%",
     description: "Transformamos un calzado urbano en un diseño más formal manteniendo la estética original. Reemplazamos suelas, agregamos material de cuero y creamos una customización única que eleva el par a otro nivel.",
     images: ["/srv-3.jpg", "/srv-3a.jpg", "/srv-3b.jpg"],
   },
