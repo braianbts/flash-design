@@ -16,10 +16,10 @@ const ITEMS = [
   {
     num: "02",
     cat: "Nike × Air Max Day 2026",
-    title: "Total 90 Air Max 95",
+    title: "Airmax Total 95",
     desc: "En 2026 colaboré con Nike a nivel local en el contexto del Air Max Day 2026. Una celebración mítica de la marca originaria de Oregón. Fusionamos los míticos botines Total 90 con la suela de las legendarias Air Max 95. Este par fue presentado en el Nike de Alto.",
     src: "/dest-2.jpg",
-    images: ["/dest-2.jpg", "/dest-6.jpg"],
+    images: ["/dest-2.jpg"],
     style: "gradient",
   },
   {
