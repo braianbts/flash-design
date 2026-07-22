@@ -8,6 +8,7 @@ type Service = {
   description: string;
   images: string[];
   href?: string;
+  objectPosition?: string;
 };
 
 const SERVICES: Service[] = [
@@ -26,6 +27,7 @@ const SERVICES: Service[] = [
   {
     id: "s3",
     label: "Re-work",
+    objectPosition: "center 30%",
     description: "Transformamos un calzado urbano en un diseño más formal manteniendo la estética original. Reemplazamos suelas, agregamos material de cuero y creamos una customización única que eleva el par a otro nivel.",
     images: ["/srv-3.jpg", "/srv-3a.jpg", "/srv-3b.jpg"],
   },
@@ -87,6 +89,7 @@ export default function CategoriesSection() {
               alt={active.label}
               fill
               className="object-cover"
+              style={active.objectPosition ? { objectPosition: active.objectPosition } : undefined}
               priority
             />
           ) : (
@@ -251,6 +254,7 @@ export default function CategoriesSection() {
               alt={active.label}
               fill
               className="object-cover transition-opacity duration-500"
+              style={active.objectPosition ? { objectPosition: active.objectPosition } : undefined}
               priority
               sizes="50vw"
             />
