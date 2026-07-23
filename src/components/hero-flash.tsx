@@ -57,7 +57,7 @@ export default function HeroFlash() {
         Saltar al contenido
       </a>
 
-      <div className="relative w-full min-h-[100svh] flex flex-col" style={{ perspective: "1200px" }}>
+      <div className="relative w-full h-[100svh] md:min-h-[100svh] md:h-auto flex flex-col" style={{ perspective: "1200px" }}>
 
         {/* FONDO */}
         <Image src="/IMG1.JPG" alt="" fill priority sizes="100vw"
@@ -104,18 +104,27 @@ export default function HeroFlash() {
             </div>
           </div>
 
-          {/* TIPOGRAFÍA MONUMENTAL */}
-          <div className="flex-1 flex flex-col justify-end md:justify-center mt-6 md:mt-0">
+          {/* MOBILE: imagen centrada en espacio restante */}
+          <div className="md:hidden flex-1 flex items-center justify-center" style={fade(0.2, 24)}>
+            <Image
+              src="/custom-opening-phone.png"
+              alt="Personalización & Custom Sneakers."
+              width={800}
+              height={800}
+              priority
+              className="w-[86vw] h-auto object-contain"
+              style={{ filter: "drop-shadow(0 8px 40px rgba(0,0,0,0.6))" }}
+            />
+          </div>
 
-            {/* Etiqueta superior */}
-            <div className="flex items-center gap-3 mb-5 md:mb-6" style={fade(0.12, 14)}>
+          {/* DESKTOP: headline + etiqueta */}
+          <div className="hidden md:flex flex-1 flex-col justify-center">
+            <div className="flex items-center gap-3 mb-5" style={fade(0.12, 14)}>
               <span className="w-6 h-px bg-[#2563EB]" />
               <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-[#2563EB]">
                 Diseño · Materiales · Arte
               </span>
             </div>
-
-            {/* Headline — imagen Photoshop */}
             <div style={fade(0.2, 24)}>
               <Image
                 src="/custom-opening.png"
@@ -127,9 +136,7 @@ export default function HeroFlash() {
                 style={{ filter: "drop-shadow(0 8px 40px rgba(0,0,0,0.5))" }}
               />
             </div>
-
-            {/* Separador + stats — solo desktop */}
-            <div className="hidden md:flex items-center gap-10 mt-8" style={fade(0.45, 14)}>
+            <div className="flex items-center gap-10 mt-8" style={fade(0.45, 14)}>
               <div className="h-px flex-1 max-w-[60px]" style={{ background: "rgba(255,255,255,0.1)" }} />
               <span className="text-white/20 text-[10px] font-bold uppercase tracking-[0.35em]">Buenos Aires</span>
               <span className="text-white/10 text-[10px]">·</span>
