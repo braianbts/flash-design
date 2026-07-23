@@ -21,8 +21,8 @@ export default function KickSection() {
       {/* ── FONDO: negro sólido ── */}
       <div className="absolute inset-0 z-0 bg-black" />
 
-      {/* ── IMAGEN: solo ocupa 55% derecho ── */}
-      <div className="absolute right-0 top-0 bottom-0 w-[68%] z-[1]">
+      {/* ── IMAGEN desktop: ocupa 68% derecho ── */}
+      <div className="hidden md:block absolute right-0 top-0 bottom-0 w-[68%] z-[1]">
         <Image
           src="/kick1.jpg"
           alt=""
@@ -31,15 +31,29 @@ export default function KickSection() {
           sizes="55vw"
           priority
         />
-        {/* fade izquierda */}
         <div className="absolute inset-0"
           style={{ background: "linear-gradient(90deg, black 0%, rgba(0,0,0,0.5) 30%, transparent 65%)" }} />
-        {/* fade bottom */}
         <div className="absolute inset-0"
           style={{ background: "linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 35%)" }} />
-        {/* tinte verde */}
         <div className="absolute inset-0"
           style={{ background: "radial-gradient(ellipse at 70% 40%, rgba(83,252,24,0.10) 0%, transparent 55%)" }} />
+      </div>
+
+      {/* ── IMAGEN mobile: mitad inferior ── */}
+      <div className="md:hidden absolute bottom-0 left-0 right-0 h-[52%] z-[1]">
+        <Image
+          src="/kick1.jpg"
+          alt=""
+          fill
+          className="object-cover object-top"
+          sizes="100vw"
+          priority
+        />
+        {/* fade top para que se integre con el texto */}
+        <div className="absolute inset-0"
+          style={{ background: "linear-gradient(to bottom, black 0%, rgba(0,0,0,0.4) 30%, transparent 70%)" }} />
+        <div className="absolute inset-0"
+          style={{ background: "radial-gradient(ellipse at 60% 40%, rgba(83,252,24,0.08) 0%, transparent 55%)" }} />
       </div>
 
       {/* borde top */}
