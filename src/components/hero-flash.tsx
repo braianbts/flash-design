@@ -115,39 +115,17 @@ export default function HeroFlash() {
               </span>
             </div>
 
-            {/* Headline */}
+            {/* Headline — imagen Photoshop */}
             <div style={fade(0.2, 24)}>
-              <h1 className="font-black uppercase leading-[0.85] tracking-[-0.025em]">
-                {/* Línea 1 — tamaño mediano, visible completa */}
-                <span
-                  className="block text-white/90"
-                  style={{ fontSize: "clamp(2.4rem, 6.2vw, 6rem)" }}
-                >
-                  Personalización
-                </span>
-
-                {/* Línea 2 — azul, un poco más grande */}
-                <span
-                  className="block"
-                  style={{
-                    fontSize: "clamp(2.8rem, 7.5vw, 7.2rem)",
-                    background: "linear-gradient(90deg, #60a5fa 0%, #2563EB 60%)",
-                    WebkitBackgroundClip: "text",
-                    WebkitTextFillColor: "transparent",
-                    backgroundClip: "text",
-                  }}
-                >
-                  &amp; Custom
-                </span>
-
-                {/* Línea 3 — la más grande, palabra corta que cabe perfecto */}
-                <span
-                  className="block text-white"
-                  style={{ fontSize: "clamp(4.5rem, 14vw, 13.5rem)", lineHeight: 0.82, letterSpacing: "-0.04em" }}
-                >
-                  Sneakers.
-                </span>
-              </h1>
+              <Image
+                src="/custom-opening.png"
+                alt="Personalización & Custom Sneakers."
+                width={1200}
+                height={420}
+                priority
+                className="w-full max-w-[clamp(320px,72vw,900px)] h-auto"
+                style={{ filter: "drop-shadow(0 8px 40px rgba(0,0,0,0.5))" }}
+              />
             </div>
 
             {/* Separador + stats — solo desktop */}
