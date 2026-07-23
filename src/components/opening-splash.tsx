@@ -23,6 +23,9 @@ export default function OpeningSplash({
   // cerrar (click, Esc, fin de timer, reduce motion)
   const close = useCallback(() => setShow(false), []);
 
+
+
+
   // Mostrar una vez por sesión (clave incluye src por si cambias la imagen)
   useEffect(() => {
     if (!enabled) return;
